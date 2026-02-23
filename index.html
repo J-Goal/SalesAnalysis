@@ -63,6 +63,10 @@
                 <i class="fas fa-tachometer-alt w-6"></i>
                 <span class="font-medium">綜合分析儀表板</span>
             </div>
+            <div onclick="switchTab('annual')" id="nav-annual" class="sidebar-item px-6 py-4 flex items-center">
+                <i class="fas fa-calendar-check w-6"></i>
+                <span class="font-medium">年度業務分析</span>
+            </div>
             <div onclick="switchTab('comparison')" id="nav-comparison" class="sidebar-item px-6 py-4 flex items-center">
                 <i class="fas fa-exchange-alt w-6"></i>
                 <span class="font-medium">主資料差異分析</span>
@@ -247,6 +251,94 @@
                             </thead>
                             <tbody id="table-top20-body" class="bg-white divide-y divide-gray-200">
                                 <!-- Dynamic Data -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: ANNUAL ANALYSIS -->
+            <div id="view-annual" class="hidden space-y-6 fade-in">
+                <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 mb-4 rounded shadow-sm">
+                    <h3 class="font-bold text-indigo-800"><i class="fas fa-history mr-2"></i>2025 年度業務分析</h3>
+                    <p class="text-sm text-indigo-600 mt-1">本區塊專門分析您上傳的 2025 年完整歷史資料，協助您發掘去年的強勢產品與核心客戶，為新年度制定銷售策略。</p>
+                </div>
+
+                <!-- KPIs -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="card bg-white border-l-4 border-blue-500">
+                        <div class="text-gray-500 text-sm font-medium uppercase">2025 年度總銷售額</div>
+                        <div class="text-3xl font-bold mt-2 text-gray-800" id="annual-total-sales">$0</div>
+                    </div>
+                    <div class="card bg-white border-l-4 border-green-500">
+                        <div class="text-gray-500 text-sm font-medium uppercase">2025 總訂單數</div>
+                        <div class="text-3xl font-bold mt-2 text-gray-800" id="annual-total-orders">0</div>
+                    </div>
+                    <div class="card bg-white border-l-4 border-purple-500">
+                        <div class="text-gray-500 text-sm font-medium uppercase">2025 交易客戶數</div>
+                        <div class="text-3xl font-bold mt-2 text-gray-800" id="annual-active-customers">0</div>
+                    </div>
+                </div>
+
+                <!-- Annual Performance Breakdown -->
+                <div class="card">
+                    <h3 class="text-lg font-bold text-gray-700 mb-4"><i class="fas fa-bullseye text-purple-500 mr-2"></i>業績達成項目分析 (2025 年度總結)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">類型</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">業績數字</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">佔比</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-annual-classification-body" class="bg-white divide-y divide-gray-200">
+                                <!-- Dynamic Data -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Top 15 Products -->
+                    <div class="card">
+                        <h3 class="text-lg font-bold text-gray-700 mb-4"><i class="fas fa-trophy text-yellow-500 mr-2"></i>Top 15 暢銷產品家族</h3>
+                        <div class="w-full h-80 relative">
+                            <canvas id="annualTopProdChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Angles: SBU & OrderType -->
+                    <div class="card flex flex-col gap-6">
+                        <div class="flex-1">
+                            <h3 class="text-sm font-bold text-gray-700 mb-2">SBU 營收分佈</h3>
+                            <div class="w-full h-32 relative">
+                                <canvas id="annualSbuChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-100 pt-4 flex-1">
+                            <h3 class="text-sm font-bold text-gray-700 mb-2">業績類型 (Order Classification) 佔比</h3>
+                            <div class="w-full h-32 relative">
+                                <canvas id="annualOrderTypeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top 15 Customers -->
+                <div class="card">
+                    <h3 class="text-lg font-bold text-gray-700 mb-4"><i class="fas fa-crown text-yellow-500 mr-2"></i>Top 15 貢獻客戶</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="table-header">排名</th>
+                                    <th class="table-header">客戶名稱</th>
+                                    <th class="table-header text-right">年度總金額</th>
+                                    <th class="table-header text-right">佔比</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-annual-top-cust" class="bg-white divide-y divide-gray-200">
                             </tbody>
                         </table>
                     </div>
@@ -615,6 +707,9 @@
             
             allProductFamilies: new Set(),
             chartInstance: null,
+            annualProdChart: null,
+            annualSbuChart: null,
+            annualTypeChart: null,
             selectedCustomers: new Set()
         };
 
@@ -967,6 +1062,7 @@
                         document.getElementById('storage-indicator-2025').classList.remove('hidden');
                         document.getElementById('icon-2025').classList.remove('text-gray-400');
                         document.getElementById('icon-2025').classList.add('text-green-500');
+                        updateAnnualAnalysis(); // 更新年度分析資料
                     }
                 }
             } catch (e) { console.error(e); }
@@ -987,6 +1083,7 @@
                 document.getElementById('storage-indicator-2025').classList.add('hidden');
                 document.getElementById('icon-2025').classList.remove('text-green-500');
                 document.getElementById('file-2025').value = ''; 
+                updateAnnualAnalysis();
             }
         }
 
@@ -1201,6 +1298,7 @@
                     saveCachedData2025(data, file.name);
                     document.getElementById('icon-2025').classList.add('text-green-500');
                     updateCustomerDropdown();
+                    updateAnnualAnalysis(); // 更新年度分析資料
                     if(state.selectedCustomers.size > 0) analyzeCustomer();
                 } else if (year === '2026') {
                     state.current2026 = data;
@@ -1301,6 +1399,148 @@
             top20Body.innerHTML = '';
             [...dashData].sort((a, b) => b.amount - a.amount).slice(0, 20).forEach((item, idx) => {
                 top20Body.innerHTML += `<tr class="hover:bg-gray-50"><td class="table-cell text-gray-500">#${idx + 1}</td><td class="table-cell font-semibold text-gray-800">${item.customer.substring(0,20)}...</td><td class="table-cell text-right text-green-600 font-bold">${formatCurrency(item.amount)}</td><td class="table-cell text-xs">${item.productFamily}</td><td class="table-cell text-xs">${item.sbu}</td><td class="table-cell text-xs">${item.type}</td></tr>`;
+            });
+        }
+
+        // --- Annual Analysis Logic (2025 Data) ---
+        function updateAnnualAnalysis() {
+            const data = state.data2025;
+            if (!data || data.length === 0) {
+                 document.getElementById('annual-total-sales').textContent = "$0";
+                 document.getElementById('annual-total-orders').textContent = "0";
+                 document.getElementById('annual-active-customers').textContent = "0";
+                 document.getElementById('table-annual-top-cust').innerHTML = '';
+                 document.getElementById('table-annual-classification-body').innerHTML = '';
+                 if (state.annualProdChart) state.annualProdChart.destroy();
+                 if (state.annualSbuChart) state.annualSbuChart.destroy();
+                 if (state.annualTypeChart) state.annualTypeChart.destroy();
+                 return;
+            }
+
+            const totalSales = data.reduce((sum, item) => sum + item.amount, 0);
+            document.getElementById('annual-total-sales').textContent = formatCurrency(totalSales);
+            document.getElementById('annual-total-orders').textContent = data.length.toLocaleString();
+            document.getElementById('annual-active-customers').textContent = new Set(data.map(d => d.customer)).size.toLocaleString();
+
+            // --- Performance Item Analysis for 2025 ---
+            let actualTotalSub = 0;
+            let actualPqSub = 0;
+            let actualNewSub1x = 0;
+
+            data.forEach(item => {
+                const isSub = item.orderClassification.toUpperCase() === 'SUB';
+                const isN = item.orderType.toUpperCase() === 'N';
+                const is1X = item.orderType.toUpperCase() === '1X';
+
+                if (isSub) actualTotalSub += item.amount;
+                if (isSub && item.sbu === 'ProQuest') actualPqSub += item.amount;
+
+                const isTargetSbuForNew = item.sbu === 'R&A' || item.rawSbu.toUpperCase().includes('EX LIBRIS') || item.rawSbu.toUpperCase().includes('INNOVATIVE');
+                const cond1 = isN && isSub && isTargetSbuForNew;
+                const cond2 = item.sbu === 'R&A' && is1X;
+
+                if (cond1 || cond2) {
+                    actualNewSub1x += item.amount;
+                }
+            });
+
+            const perfStats = {
+                "Total Sub": actualTotalSub,
+                "PQ Sub": actualPqSub,
+                "New Sub & 1X": actualNewSub1x
+            };
+
+            const perfTbody = document.getElementById('table-annual-classification-body');
+            perfTbody.innerHTML = '';
+            Object.entries(perfStats).sort(([,a], [,b]) => b - a).forEach(([type, amt]) => {
+                perfTbody.innerHTML += `<tr><td class="table-cell font-medium">${type}</td><td class="table-cell text-right">${formatCurrency(amt)}</td><td class="table-cell text-right text-gray-500">${formatPercent(totalSales > 0 ? amt / totalSales : 0)}</td></tr>`;
+            });
+            // ------------------------------------------
+
+            // 1. Top 15 Products (Bar Chart)
+            const prodAgg = {};
+            data.forEach(d => { prodAgg[d.productFamily] = (prodAgg[d.productFamily] || 0) + d.amount; });
+            const topProds = Object.entries(prodAgg).sort((a, b) => b[1] - a[1]).slice(0, 15);
+
+            if (state.annualProdChart) state.annualProdChart.destroy();
+            state.annualProdChart = new Chart(document.getElementById('annualTopProdChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: topProds.map(p => p[0].length > 15 ? p[0].substring(0, 15) + '...' : p[0]),
+                    datasets: [{
+                        label: '銷售金額',
+                        data: topProds.map(p => p[1]),
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false }, 
+                        tooltip: { callbacks: { label: (ctx) => formatCurrency(ctx.raw) } } 
+                    },
+                    scales: { 
+                        y: { beginAtZero: true, ticks: { callback: (val) => '$' + (val/1000) + 'k' } },
+                        x: { ticks: { autoSkip: false, maxRotation: 45, minRotation: 45 } }
+                    }
+                }
+            });
+
+            // 2. SBU Breakdown (Doughnut)
+            const sbuAgg = {};
+            data.forEach(d => { sbuAgg[d.sbu] = (sbuAgg[d.sbu] || 0) + d.amount; });
+            if (state.annualSbuChart) state.annualSbuChart.destroy();
+            state.annualSbuChart = new Chart(document.getElementById('annualSbuChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(sbuAgg),
+                    datasets: [{ data: Object.values(sbuAgg), backgroundColor: ['#ec4899', '#6366f1', '#06b6d4', '#9ca3af'], borderWidth: 1 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+            });
+
+            // 3. Order Type Breakdown (Doughnut)
+            const typeAgg = {};
+            data.forEach(d => { 
+                const type = d.orderClassification || "未分類"; 
+                typeAgg[type] = (typeAgg[type] || 0) + d.amount; 
+            });
+            if (state.annualTypeChart) state.annualTypeChart.destroy();
+            state.annualTypeChart = new Chart(document.getElementById('annualOrderTypeChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(typeAgg),
+                    datasets: [{ data: Object.values(typeAgg), backgroundColor: ['#10b981', '#f59e0b', '#8b5cf6', '#64748b'], borderWidth: 1 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+            });
+
+            // 4. Top 15 Customers (Table)
+            const custAgg = {};
+            data.forEach(d => { custAgg[d.customer] = (custAgg[d.customer] || 0) + d.amount; });
+            const topCusts = Object.entries(custAgg).sort((a, b) => b[1] - a[1]).slice(0, 15);
+            
+            const tbody = document.getElementById('table-annual-top-cust');
+            tbody.innerHTML = '';
+            topCusts.forEach((c, idx) => {
+                const pct = totalSales > 0 ? (c[1] / totalSales) : 0;
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="table-cell text-gray-500">#${idx + 1}</td>
+                        <td class="table-cell font-semibold text-gray-800">${c[0]}</td>
+                        <td class="table-cell text-right text-green-600 font-bold">${formatCurrency(c[1])}</td>
+                        <td class="table-cell text-right text-gray-500">
+                            <div class="flex items-center justify-end">
+                                <span class="mr-2">${formatPercent(pct)}</span>
+                                <div class="w-16 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: ${pct * 100}%"></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
             });
         }
 
@@ -1423,6 +1663,7 @@
             const titles = { 
                 'upload': '資料上傳', 
                 'dashboard': '綜合分析儀表板', 
+                'annual': '年度業務分析',
                 'performance': '業績達成分析',
                 'comparison': '主資料差異分析', 
                 'customer': '特定客戶分析' 
@@ -1431,6 +1672,7 @@
             
             // Recalculate on switch if needed
             if(tabId === 'performance') updatePerformance();
+            if(tabId === 'annual') updateAnnualAnalysis();
         }
 
         switchTab('upload');

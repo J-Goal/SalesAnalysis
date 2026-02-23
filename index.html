@@ -309,16 +309,16 @@
                     </div>
 
                     <!-- Analysis Angles: SBU & OrderType -->
-                    <div class="card flex flex-col gap-6">
-                        <div class="flex-1">
-                            <h3 class="text-sm font-bold text-gray-700 mb-2">SBU 營收分佈</h3>
-                            <div class="w-full h-32 relative">
+                    <div class="card flex flex-col justify-between">
+                        <div class="w-full flex flex-col items-center">
+                            <h3 class="text-sm font-bold text-gray-700 mb-2 w-full text-left">SBU 營收分佈</h3>
+                            <div class="w-full h-36 relative">
                                 <canvas id="annualSbuChart"></canvas>
                             </div>
                         </div>
-                        <div class="border-t border-gray-100 pt-4 flex-1">
-                            <h3 class="text-sm font-bold text-gray-700 mb-2">業績類型 (Order Classification) 佔比</h3>
-                            <div class="w-full h-32 relative">
+                        <div class="border-t border-gray-100 pt-4 w-full flex flex-col items-center mt-4">
+                            <h3 class="text-sm font-bold text-gray-700 mb-2 w-full text-left">業績類型佔比</h3>
+                            <div class="w-full h-36 relative">
                                 <canvas id="annualOrderTypeChart"></canvas>
                             </div>
                         </div>

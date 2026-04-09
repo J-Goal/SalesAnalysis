@@ -4,11 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>業績戰情室 (Sales Analysis System)</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- PapaParse for CSV -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <!-- SheetJS for Excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Marked.js for Markdown rendering -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     
     <style>
@@ -43,6 +49,7 @@
 </head>
 <body class="flex h-screen overflow-hidden">
 
+    <!-- Sidebar -->
     <aside class="w-64 bg-gray-900 text-white flex flex-col shadow-xl z-20">
         <div class="h-16 flex items-center justify-center border-b border-gray-700">
             <h1 class="text-xl font-bold tracking-wider"><i class="fas fa-chart-line mr-2"></i>業績戰情室</h1>
@@ -78,6 +85,7 @@
             </div>
         </nav>
 
+        <!-- API Key Input -->
         <div class="p-4 border-t border-gray-700">
             <label class="text-xs text-gray-400 block mb-1">Gemini API Key (選填)</label>
             <input type="password" id="api-key-input" placeholder="Enter API Key" onchange="saveApiKey()" class="w-full px-2 py-1 text-xs text-gray-900 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -86,11 +94,13 @@
 
         <div class="p-4 text-xs text-gray-400 flex flex-col items-center justify-center space-y-1 border-t border-gray-800">
             <span>&copy; 2026 Sales System</span>
-            <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-500 font-mono mt-1">v2.0.0 | 2026-04-09</span>
+            <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-500 font-mono mt-1">v2.0.1 | 2026-04-09</span>
         </div>
     </aside>
 
+    <!-- Main Content -->
     <main class="flex-1 flex flex-col overflow-hidden relative">
+        <!-- Header -->
         <header class="h-16 bg-white shadow-sm flex items-center justify-between px-8 z-10">
             <h2 id="page-title" class="text-2xl font-bold text-gray-800">資料上傳</h2>
             <div class="flex items-center space-x-4">
@@ -100,18 +110,22 @@
             </div>
         </header>
 
+        <!-- Content Area -->
         <div id="content-area" class="flex-1 overflow-auto p-8 relative">
             
+            <!-- VIEW: UPLOAD -->
             <div id="view-upload" class="space-y-6 fade-in">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- 2025 Upload -->
                     <div class="card border-l-4 border-gray-400 relative">
+                         <!-- Storage Indicator -->
                          <div id="storage-indicator-2025" class="absolute top-2 right-2 hidden">
                             <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full font-semibold" title="資料已儲存於瀏覽器">
                                 <i class="fas fa-save mr-1"></i> 已快取
                             </span>
                         </div>
 
-                        <h3 class="text-lg font-bold text-gray-700 mb-4">上傳 2025 年度資料 (參考用)</h3>
+                        <h3 class="text-lg font-bold text-gray-700 mb-4">上傳2025全年資料 (Holding)</h3>
                         <p class="text-sm text-gray-500 mb-4">請上傳去年度的完整資料以供參考。系統會自動記憶此次上傳的檔案。</p>
                         <div class="flex items-center justify-center w-full">
                             <label for="file-2025" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
@@ -129,8 +143,9 @@
                         </div>
                     </div>
 
+                    <!-- 2026 Upload -->
                     <div class="card border-l-4 border-blue-500">
-                        <h3 class="text-lg font-bold text-gray-700 mb-4">上傳 2026 Year to Date 資料 (分析用)</h3>
+                        <h3 class="text-lg font-bold text-gray-700 mb-4">上傳2026最新資料</h3>
                         <p class="text-sm text-gray-500 mb-4">此處上傳的資料將用於「儀表板」、「業績分析」與「客戶分析」。</p>
                         <div class="flex items-center justify-center w-full">
                             <label for="file-2026" class="flex flex-col items-center justify-center w-full h-32 border-2 border-blue-300 border-dashed rounded-lg cursor-pointer bg-blue-50 hover:bg-blue-100 transition-colors">
@@ -157,7 +172,9 @@
                 </div>
             </div>
 
+            <!-- VIEW: DASHBOARD -->
             <div id="view-dashboard" class="hidden space-y-6 fade-in">
+                <!-- Gemini Insight Section -->
                 <div class="card bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-100 mb-6">
                     <div class="flex justify-between items-start">
                         <div>
@@ -169,12 +186,14 @@
                         </button>
                     </div>
                     <div id="ai-insight-result" class="hidden mt-4 pt-4 border-t border-indigo-200 prose max-w-none text-sm text-gray-700">
-                        </div>
+                        <!-- AI content goes here -->
+                    </div>
                     <div id="ai-insight-loading" class="hidden mt-4 flex justify-center">
                         <div class="spinner"></div>
                     </div>
                 </div>
 
+                <!-- Top Stats Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="card bg-gradient-to-br from-blue-500 to-blue-600 text-white">
                         <div class="text-blue-100 text-sm font-medium uppercase">2026 總銷售額 (YTD)</div>
@@ -192,6 +211,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Order Classification Table -->
                     <div class="card">
                         <h3 class="text-lg font-bold text-gray-700 mb-4">業績達成項目分析</h3>
                         <div class="overflow-x-auto">
@@ -204,11 +224,13 @@
                                     </tr>
                                 </thead>
                                 <tbody id="table-classification-body" class="bg-white divide-y divide-gray-200">
-                                    </tbody>
+                                    <!-- Dynamic Data -->
+                                </tbody>
                             </table>
                         </div>
                     </div>
 
+                    <!-- Pie Chart -->
                     <div class="card flex flex-col justify-between">
                         <div class="w-full flex flex-col items-center">
                             <h3 class="text-sm font-bold text-gray-700 mb-2 w-full text-left">SBU 營收分佈</h3>
@@ -219,6 +241,7 @@
                     </div>
                 </div>
 
+                <!-- Top 20 Customers -->
                 <div class="card">
                     <h3 class="text-lg font-bold text-gray-700 mb-4">前 20 大訂單 (Top 20 Orders)</h3>
                     <div class="overflow-x-auto">
@@ -234,18 +257,21 @@
                                 </tr>
                             </thead>
                             <tbody id="table-top20-body" class="bg-white divide-y divide-gray-200">
-                                </tbody>
+                                <!-- Dynamic Data -->
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
+            <!-- VIEW: ANNUAL ANALYSIS -->
             <div id="view-annual" class="hidden space-y-6 fade-in">
                 <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 mb-4 rounded shadow-sm">
                     <h3 class="font-bold text-indigo-800"><i class="fas fa-history mr-2"></i>2025 年度回顧</h3>
                     <p class="text-sm text-indigo-600 mt-1">本區塊專門分析您上傳的 2025 年完整歷史資料，協助您發掘去年的強勢產品與核心客戶，為新年度制定銷售策略。</p>
                 </div>
 
+                <!-- KPIs -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="card bg-white border-l-4 border-blue-500">
                         <div class="text-gray-500 text-sm font-medium uppercase">2025 年度總銷售額</div>
@@ -261,6 +287,7 @@
                     </div>
                 </div>
 
+                <!-- Annual Performance Breakdown -->
                 <div class="card">
                     <h3 class="text-lg font-bold text-gray-700 mb-4"><i class="fas fa-bullseye text-purple-500 mr-2"></i>業績達成項目分析 (2025 年度總結)</h3>
                     <div class="overflow-x-auto">
@@ -273,12 +300,14 @@
                                 </tr>
                             </thead>
                             <tbody id="table-annual-classification-body" class="bg-white divide-y divide-gray-200">
-                                </tbody>
+                                <!-- Dynamic Data -->
+                            </tbody>
                         </table>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Top 15 Products -->
                     <div class="card">
                         <h3 class="text-lg font-bold text-gray-700 mb-4"><i class="fas fa-trophy text-yellow-500 mr-2"></i>Top 15 暢銷產品家族</h3>
                         <div class="w-full h-80 relative">
@@ -286,6 +315,7 @@
                         </div>
                     </div>
 
+                    <!-- Analysis Angles: SBU & OrderType -->
                     <div class="card flex flex-col justify-between">
                         <div class="w-full flex flex-col items-center">
                             <h3 class="text-sm font-bold text-gray-700 mb-2 w-full text-left">SBU 營收分佈</h3>
@@ -302,6 +332,7 @@
                     </div>
                 </div>
 
+                <!-- Top 15 Customers -->
                 <div class="card">
                     <h3 class="text-lg font-bold text-gray-700 mb-4"><i class="fas fa-crown text-yellow-500 mr-2"></i>Top 15 貢獻客戶</h3>
                     <div class="overflow-x-auto">
@@ -321,8 +352,10 @@
                 </div>
             </div>
 
+            <!-- VIEW: PRODUCT ANALYSIS -->
             <div id="view-product" class="hidden space-y-6 fade-in">
                 
+                <!-- Product Line Summary Cards -->
                 <div id="prod-summary-cards" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 hidden">
                     <div class="card bg-indigo-50 border-l-4 border-indigo-500 shadow-sm">
                         <div class="text-indigo-800 text-sm font-bold uppercase">R&A 總銷售額</div>
@@ -412,7 +445,9 @@
                 </div>
             </div>
 
+            <!-- VIEW: COMPARISON -->
             <div id="view-comparison" class="hidden space-y-6 fade-in">
+                <!-- Comparison Upload Area -->
                 <div class="card border-l-4 border-yellow-500 mb-6">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-bold text-gray-800">資料比對中心</h3>
@@ -421,6 +456,7 @@
                         </button>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Old Version Upload -->
                         <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                             <h4 class="font-bold text-gray-600 mb-2">1. 舊版資料 (Base)</h4>
                             <label for="comp-file-old" class="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer hover:bg-white transition-colors">
@@ -435,6 +471,7 @@
                             </div>
                         </div>
 
+                        <!-- New Version Upload -->
                         <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
                             <h4 class="font-bold text-blue-700 mb-2">2. 新版資料 (Target)</h4>
                             <label for="comp-file-new" class="flex flex-col items-center justify-center w-full h-24 border-2 border-blue-300 border-dashed rounded-lg cursor-pointer hover:bg-white transition-colors">
@@ -457,6 +494,7 @@
                 </div>
 
                 <div id="comparison-content" class="hidden space-y-8">
+                    <!-- Added Rows -->
                     <div class="card border-t-4 border-green-500">
                         <h3 class="text-lg font-bold text-green-700 mb-2">
                             <i class="fas fa-plus-circle mr-2"></i>新增加的訂單 (Added)
@@ -476,6 +514,7 @@
                         </div>
                     </div>
 
+                    <!-- Deleted Rows -->
                     <div class="card border-t-4 border-red-500">
                         <h3 class="text-lg font-bold text-red-700 mb-2">
                             <i class="fas fa-minus-circle mr-2"></i>被移除的訂單 (Removed)
@@ -495,6 +534,7 @@
                         </div>
                     </div>
 
+                    <!-- Changed Rows -->
                     <div class="card border-t-4 border-blue-500">
                         <h3 class="text-lg font-bold text-blue-700 mb-2">
                             <i class="fas fa-edit mr-2"></i>金額變動的訂單 (Changed)
@@ -518,16 +558,19 @@
                 </div>
             </div>
 
+            <!-- VIEW: CUSTOMER ANALYSIS -->
             <div id="view-customer" class="hidden space-y-6 fade-in">
                 <div class="card bg-gray-50 border-b border-gray-200 sticky top-0 z-10">
                     <label class="block text-sm font-medium text-gray-700 mb-2">選擇客戶進行洞察 (可多選)</label>
                     
+                    <!-- Custom Multi-Select Dropdown -->
                     <div class="relative group" id="cust-dropdown-wrapper">
                         <button id="cust-dropdown-btn" onclick="toggleCustDropdown()" class="w-full bg-white border border-gray-300 text-left px-4 py-3 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex justify-between items-center">
                             <span id="cust-dropdown-label" class="text-gray-500">請點擊選擇客戶...</span>
                             <i class="fas fa-chevron-down text-gray-400"></i>
                         </button>
                         
+                        <!-- Dropdown Content -->
                         <div id="cust-dropdown-menu" class="hidden absolute w-full bg-white border border-gray-300 rounded-b-md shadow-lg z-50 mt-1">
                             <div class="p-2 border-b bg-gray-50 flex flex-col gap-2">
                                 <input type="text" id="cust-search-input" placeholder="搜尋客戶名稱..." onkeyup="filterCustList(this.value)" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-blue-500">
@@ -537,11 +580,13 @@
                                 </div>
                             </div>
                             <div id="cust-list-container" class="cust-dropdown-content">
+                                <!-- Checkboxes will be injected here -->
                                 <div class="p-4 text-center text-gray-400 text-sm">請先上傳資料</div>
                             </div>
                         </div>
                     </div>
                     
+                    <!-- Filter for OrderType = N -->
                     <div class="mt-4">
                         <label class="inline-flex items-center cursor-pointer">
                             <input type="checkbox" id="cust-filter-new" onchange="analyzeCustomer()" class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded transition duration-150 ease-in-out">
@@ -564,7 +609,9 @@
                         </div>
                     </div>
 
+                    <!-- SBU Breakdown for Customer -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- R&A -->
                         <div class="card border-t-4 border-indigo-500">
                             <h4 class="font-bold text-indigo-700 mb-3">R&A 銷售紀錄</h4>
                             <div class="overflow-y-auto max-h-60">
@@ -574,6 +621,7 @@
                             </div>
                             <div id="cust-ra-empty" class="text-xs text-gray-400 italic mt-2 hidden">無資料</div>
                         </div>
+                         <!-- ProQuest -->
                          <div class="card border-t-4 border-pink-500">
                             <h4 class="font-bold text-pink-700 mb-3">ProQuest 銷售紀錄</h4>
                             <div class="overflow-y-auto max-h-60">
@@ -583,6 +631,7 @@
                             </div>
                             <div id="cust-pq-empty" class="text-xs text-gray-400 italic mt-2 hidden">無資料</div>
                         </div>
+                         <!-- Software -->
                          <div class="card border-t-4 border-cyan-500">
                             <h4 class="font-bold text-cyan-700 mb-3">Software 銷售紀錄</h4>
                             <div class="overflow-y-auto max-h-60">
@@ -594,6 +643,7 @@
                         </div>
                     </div>
 
+                    <!-- 2026 New Purchases Section -->
                     <div id="new-purchases-container" class="card border-t-4 border-green-500 hidden">
                         <h4 class="font-bold text-green-700 mb-3"><i class="fas fa-star text-yellow-400 mr-2"></i>2026 年新購產品清單 (OrderType = N)</h4>
                         <div class="overflow-y-auto max-h-60">
@@ -610,6 +660,7 @@
                         </div>
                     </div>
 
+                    <!-- Heatmap Section -->
                     <div class="card border-t-4 border-orange-500">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-lg font-bold text-gray-800"><i class="fas fa-fire text-orange-500 mr-2"></i>客戶產品購買熱點圖 (Purchase Heatmap)</h3>
@@ -631,6 +682,7 @@
                         </div>
                     </div>
 
+                    <!-- White Space Analysis & AI Pitch -->
                     <div class="card bg-gray-800 text-white">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
                             <div>
@@ -640,8 +692,10 @@
                         </div>
 
                         <div id="white-space-container" class="flex flex-wrap gap-2 mb-6">
-                            </div>
+                            <!-- Tags go here -->
+                        </div>
                         
+                        <!-- AI Prompt Input -->
                         <div class="border-t border-gray-600 pt-4 mt-2">
                             <label class="block text-sm text-gray-300 mb-2"><i class="fas fa-comment-dots mr-1"></i>給 AI 的特殊分析指示 (選填)</label>
                             <div class="flex gap-2">
@@ -652,8 +706,10 @@
                             </div>
                         </div>
 
+                        <!-- AI Pitch Result -->
                         <div id="ai-pitch-result" class="hidden mt-4 bg-gray-700 rounded p-4 border border-gray-600 prose prose-invert max-w-none text-sm">
-                            </div>
+                            <!-- AI content goes here -->
+                        </div>
                          <div id="ai-pitch-loading" class="hidden mt-4 flex justify-center">
                             <div class="spinner border-gray-400 border-l-yellow-400"></div>
                         </div>
@@ -661,6 +717,7 @@
                 </div>
             </div>
 
+            <!-- VIEW: PERFORMANCE -->
             <div id="view-performance" class="hidden space-y-6 fade-in">
                 <div class="card border-l-4 border-purple-500">
                     <div class="flex items-center justify-between mb-4">
@@ -683,6 +740,7 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- Row 1: Total Sub -->
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Total Sub</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">60%</td>
@@ -692,6 +750,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-green-600" id="act-total-sub">$0</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-purple-600" id="ach-total-sub">0%</td>
                                 </tr>
+                                <!-- Row 2: PQ Sub -->
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">PQ Sub</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">20%</td>
@@ -701,6 +760,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-green-600" id="act-pq-sub">$0</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-purple-600" id="ach-pq-sub">0%</td>
                                 </tr>
+                                <!-- Row 3: New Sub & 1X -->
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">New Sub & 1X</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">20%</td>

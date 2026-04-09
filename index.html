@@ -75,6 +75,10 @@
                 <i class="fas fa-user-tie w-6"></i>
                 <span class="font-medium">特定客戶分析</span>
             </div>
+            <div onclick="switchTab('product')" id="nav-product" class="sidebar-item px-6 py-4 flex items-center">
+                <i class="fas fa-box-open w-6"></i>
+                <span class="font-medium">特定產品分析</span>
+            </div>
             <div onclick="switchTab('performance')" id="nav-performance" class="sidebar-item px-6 py-4 flex items-center">
                 <i class="fas fa-bullseye w-6"></i>
                 <span class="font-medium">業績達成分析</span>
@@ -226,10 +230,12 @@
                     </div>
 
                     <!-- Pie Chart -->
-                    <div class="card flex flex-col items-center justify-center">
-                        <h3 class="text-lg font-bold text-gray-700 mb-4 w-full text-left">產品家族佔比 (SBU Breakdown)</h3>
-                        <div class="w-full h-64 relative">
-                            <canvas id="sbuPieChart"></canvas>
+                    <div class="card flex flex-col justify-between">
+                        <div class="w-full flex flex-col items-center">
+                            <h3 class="text-sm font-bold text-gray-700 mb-2 w-full text-left">SBU 營收分佈</h3>
+                            <div class="w-full h-36 relative">
+                                <canvas id="sbuPieChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -345,69 +351,95 @@
                 </div>
             </div>
 
-            <!-- VIEW: PERFORMANCE -->
-            <div id="view-performance" class="hidden space-y-6 fade-in">
-                <div class="card border-l-4 border-purple-500">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-bold text-gray-800">業績達成分析 (Performance Achievement)</h3>
-                        <div class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-bold shadow-sm">
-                            總加權達成率: <span id="perf-total-achieved" class="text-xl ml-1">0%</span>
+            <!-- VIEW: PRODUCT ANALYSIS -->
+            <div id="view-product" class="hidden space-y-6 fade-in">
+                
+                <!-- Product Line Summary Cards -->
+                <div id="prod-summary-cards" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 hidden">
+                    <div class="card bg-indigo-50 border-l-4 border-indigo-500 shadow-sm">
+                        <div class="text-indigo-800 text-sm font-bold uppercase">R&A 總銷售額</div>
+                        <div class="text-2xl font-bold mt-2 text-indigo-900" id="summary-ra">$0</div>
+                    </div>
+                    <div class="card bg-pink-50 border-l-4 border-pink-500 shadow-sm">
+                        <div class="text-pink-800 text-sm font-bold uppercase">ProQuest 總銷售額</div>
+                        <div class="text-2xl font-bold mt-2 text-pink-900" id="summary-proquest">$0</div>
+                    </div>
+                    <div class="card bg-cyan-50 border-l-4 border-cyan-500 shadow-sm">
+                        <div class="text-cyan-800 text-sm font-bold uppercase">Ex Libris 總銷售額</div>
+                        <div class="text-2xl font-bold mt-2 text-cyan-900" id="summary-exlibris">$0</div>
+                    </div>
+                </div>
+
+                <div class="card bg-gray-50 border-b border-gray-200 sticky top-0 z-10">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-box-open text-blue-500 text-xl mr-2"></i>
+                        <h3 class="text-lg font-bold text-gray-800">特定產品分析 (2025年度)</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Product Line (必選)</label>
+                            <select id="prod-level-1" onchange="onProdLevel1Change()" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-3 py-2 text-sm border">
+                                <option value="">請先上傳 2025 資料...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Business Unit (可多選)</label>
+                            <div class="relative group">
+                                <button id="bu-dropdown-btn" onclick="toggleProdDropdown('bu-dropdown-menu')" class="w-full bg-gray-100 border border-gray-300 text-left px-3 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex justify-between items-center text-sm" disabled>
+                                    <span id="bu-dropdown-label" class="text-gray-500 truncate pr-2">全選</span>
+                                    <i class="fas fa-chevron-down text-gray-400"></i>
+                                </button>
+                                <div id="bu-dropdown-menu" class="hidden absolute w-full bg-white border border-gray-300 rounded-b-md shadow-lg z-50 mt-1 max-h-60 overflow-y-auto">
+                                    <div id="bu-list-container" class="p-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Product Family (可多選)</label>
+                            <div class="relative group">
+                                <button id="pf-dropdown-btn" onclick="toggleProdDropdown('pf-dropdown-menu')" class="w-full bg-gray-100 border border-gray-300 text-left px-3 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex justify-between items-center text-sm" disabled>
+                                    <span id="pf-dropdown-label" class="text-gray-500 truncate pr-2">全選</span>
+                                    <i class="fas fa-chevron-down text-gray-400"></i>
+                                </button>
+                                <div id="pf-dropdown-menu" class="hidden absolute w-full bg-white border border-gray-300 rounded-b-md shadow-lg z-50 mt-1 max-h-60 overflow-y-auto">
+                                    <div id="pf-list-container" class="p-1"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-500 mb-6">請於下方輸入您的目標金額，系統將自動計算達成率（儲存於瀏覽器）。</p>
-                    
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase">評量項目</th>
-                                    <th class="px-6 py-4 text-center text-sm font-bold text-gray-700 uppercase">業績比例 (加權)</th>
-                                    <th class="px-6 py-4 text-right text-sm font-bold text-gray-700 uppercase">目標金額 (User Input)</th>
-                                    <th class="px-6 py-4 text-right text-sm font-bold text-gray-700 uppercase">實際金額 (Actual)</th>
-                                    <th class="px-6 py-4 text-right text-sm font-bold text-gray-700 uppercase">單項達成率</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <!-- Row 1: Total Sub -->
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Total Sub</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">60%</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
-                                        $ <input type="number" id="tgt-total-sub" onchange="savePerformanceTargets()" class="w-32 px-2 py-1 border border-gray-300 rounded focus:ring-purple-500 focus:border-purple-500 text-right" value="0">
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-green-600" id="act-total-sub">$0</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-purple-600" id="ach-total-sub">0%</td>
-                                </tr>
-                                <!-- Row 2: PQ Sub -->
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">PQ Sub</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">20%</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
-                                        $ <input type="number" id="tgt-pq-sub" onchange="savePerformanceTargets()" class="w-32 px-2 py-1 border border-gray-300 rounded focus:ring-purple-500 focus:border-purple-500 text-right" value="0">
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-green-600" id="act-pq-sub">$0</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-purple-600" id="ach-pq-sub">0%</td>
-                                </tr>
-                                <!-- Row 3: New Sub & 1X -->
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">New Sub & 1X</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">20%</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
-                                        $ <input type="number" id="tgt-new-sub" onchange="savePerformanceTargets()" class="w-32 px-2 py-1 border border-gray-300 rounded focus:ring-purple-500 focus:border-purple-500 text-right" value="0">
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-green-600" id="act-new-sub">$0</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-purple-600" id="ach-new-sub">0%</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                </div>
+
+                <div id="product-analysis-content" class="hidden space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="card bg-gradient-to-br from-blue-500 to-blue-600 text-white md:col-span-1 flex flex-col justify-center items-center py-8 shadow-sm">
+                            <div class="text-blue-100 text-sm font-medium uppercase">總銷售額</div>
+                            <div class="text-4xl font-bold mt-2" id="prod-total-sales">$0</div>
+                            <div class="text-sm mt-4 bg-blue-700 px-4 py-1 rounded-full text-blue-100 shadow-inner">購買客戶數: <span id="prod-total-customers" class="font-bold text-white">0</span></div>
+                        </div>
+                        <div class="card md:col-span-2 shadow-sm">
+                            <h3 class="text-md font-bold text-gray-700 mb-2">前 10 大購買客戶</h3>
+                            <div class="w-full h-48 relative">
+                                <canvas id="prodTopCustChart"></canvas>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mt-4 text-xs text-gray-500 bg-gray-50 p-3 rounded">
-                        <strong>邏輯定義說明：</strong><br>
-                        - <strong>Total Sub:</strong> <code>OrderClassification = "SUB"</code> 的所有業績。<br>
-                        - <strong>PQ Sub:</strong> <code>OrderClassification = "SUB"</code> 且 <code>SBU = "ProQuest"</code> 的業績。<br>
-                        - <strong>New Sub & 1X:</strong> 符合以下任一條件之加總：<br>
-                           &nbsp;&nbsp;1. <code>OrderType = "N"</code> 且 <code>OrderClassification = "SUB"</code> 且歸屬於 R&A 或 Ex Libris 或 Innovative。<br>
-                           &nbsp;&nbsp;2. <code>SBU = "R&A"</code> 且 <code>OrderType = "1X"</code>。
+
+                    <div class="card shadow-sm">
+                        <h3 class="text-lg font-bold text-gray-700 mb-4"><i class="fas fa-list text-gray-400 mr-2"></i>購買客戶明細清單</h3>
+                        <div class="overflow-x-auto max-h-[500px]">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50 sticky top-0 shadow-sm z-10">
+                                    <tr>
+                                        <th class="table-header">客戶名稱</th>
+                                        <th class="table-header">Business Unit</th>
+                                        <th class="table-header">Product Family</th>
+                                        <th class="table-header text-right">銷售金額</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-prod-customers" class="bg-white divide-y divide-gray-200">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -684,6 +716,73 @@
                 </div>
             </div>
 
+            <!-- VIEW: PERFORMANCE -->
+            <div id="view-performance" class="hidden space-y-6 fade-in">
+                <div class="card border-l-4 border-purple-500">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-gray-800">業績達成分析 (Performance Achievement)</h3>
+                        <div class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-bold shadow-sm">
+                            總加權達成率: <span id="perf-total-achieved" class="text-xl ml-1">0%</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-6">請於下方輸入您的目標金額，系統將自動計算達成率（儲存於瀏覽器）。</p>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase">評量項目</th>
+                                    <th class="px-6 py-4 text-center text-sm font-bold text-gray-700 uppercase">業績比例 (加權)</th>
+                                    <th class="px-6 py-4 text-right text-sm font-bold text-gray-700 uppercase">目標金額 (User Input)</th>
+                                    <th class="px-6 py-4 text-right text-sm font-bold text-gray-700 uppercase">實際金額 (Actual)</th>
+                                    <th class="px-6 py-4 text-right text-sm font-bold text-gray-700 uppercase">單項達成率</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- Row 1: Total Sub -->
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Total Sub</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">60%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
+                                        $ <input type="number" id="tgt-total-sub" onchange="savePerformanceTargets()" class="w-32 px-2 py-1 border border-gray-300 rounded focus:ring-purple-500 focus:border-purple-500 text-right" value="0">
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-green-600" id="act-total-sub">$0</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-purple-600" id="ach-total-sub">0%</td>
+                                </tr>
+                                <!-- Row 2: PQ Sub -->
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">PQ Sub</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">20%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
+                                        $ <input type="number" id="tgt-pq-sub" onchange="savePerformanceTargets()" class="w-32 px-2 py-1 border border-gray-300 rounded focus:ring-purple-500 focus:border-purple-500 text-right" value="0">
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-green-600" id="act-pq-sub">$0</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-purple-600" id="ach-pq-sub">0%</td>
+                                </tr>
+                                <!-- Row 3: New Sub & 1X -->
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">New Sub & 1X</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">20%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
+                                        $ <input type="number" id="tgt-new-sub" onchange="savePerformanceTargets()" class="w-32 px-2 py-1 border border-gray-300 rounded focus:ring-purple-500 focus:border-purple-500 text-right" value="0">
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-green-600" id="act-new-sub">$0</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-purple-600" id="ach-new-sub">0%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 text-xs text-gray-500 bg-gray-50 p-3 rounded">
+                        <strong>邏輯定義說明：</strong><br>
+                        - <strong>Total Sub:</strong> <code>OrderClassification = "SUB"</code> 的所有業績。<br>
+                        - <strong>PQ Sub:</strong> <code>OrderClassification = "SUB"</code> 且 <code>SBU = "ProQuest"</code> 的業績。<br>
+                        - <strong>New Sub & 1X:</strong> 符合以下任一條件之加總：<br>
+                           &nbsp;&nbsp;1. <code>OrderType = "N"</code> 且 <code>OrderClassification = "SUB"</code> 且歸屬於 R&A 或 Ex Libris 或 Innovative。<br>
+                           &nbsp;&nbsp;2. <code>SBU = "R&A"</code> 且 <code>OrderType = "1X"</code>。
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 
@@ -710,7 +809,10 @@
             annualProdChart: null,
             annualSbuChart: null,
             annualTypeChart: null,
-            selectedCustomers: new Set()
+            prodAnalysisChart: null, // Used for Product Analysis Tab
+            selectedCustomers: new Set(),
+            selectedBUs: new Set(), // For Product Analysis dropdown
+            selectedPFs: new Set()  // For Product Analysis dropdown
         };
 
         const formatCurrency = (val) => {
@@ -729,12 +831,23 @@
             
             updateCustomerDropdown();
             
-            // Close dropdown when clicking outside
+            // Close dropdowns when clicking outside
             document.addEventListener('click', function(event) {
-                const wrapper = document.getElementById('cust-dropdown-wrapper');
-                const menu = document.getElementById('cust-dropdown-menu');
-                if (wrapper && !wrapper.contains(event.target)) {
-                    menu.classList.add('hidden');
+                // Customer multi-select
+                const custWrapper = document.getElementById('cust-dropdown-wrapper');
+                const custMenu = document.getElementById('cust-dropdown-menu');
+                if (custWrapper && !custWrapper.contains(event.target)) {
+                    custMenu.classList.add('hidden');
+                }
+
+                // Product Analysis multi-selects
+                const buMenu = document.getElementById('bu-dropdown-menu');
+                const pfMenu = document.getElementById('pf-dropdown-menu');
+                if (buMenu && !event.target.closest('#bu-dropdown-btn') && !buMenu.contains(event.target)) {
+                    buMenu.classList.add('hidden');
+                }
+                if (pfMenu && !event.target.closest('#pf-dropdown-btn') && !pfMenu.contains(event.target)) {
+                    pfMenu.classList.add('hidden');
                 }
             });
         };
@@ -778,7 +891,7 @@
             } catch(e) { console.error(e); }
         }
 
-        // --- Custom Dropdown Logic ---
+        // --- Custom Dropdown Logic (Customers) ---
         function toggleCustDropdown() {
             const menu = document.getElementById('cust-dropdown-menu');
             menu.classList.toggle('hidden');
@@ -1062,7 +1175,9 @@
                         document.getElementById('storage-indicator-2025').classList.remove('hidden');
                         document.getElementById('icon-2025').classList.remove('text-gray-400');
                         document.getElementById('icon-2025').classList.add('text-green-500');
+                        
                         updateAnnualAnalysis(); // 更新年度分析資料
+                        initProductDropdowns(); // 初始化特定產品分析選項
                     }
                 }
             } catch (e) { console.error(e); }
@@ -1084,6 +1199,7 @@
                 document.getElementById('icon-2025').classList.remove('text-green-500');
                 document.getElementById('file-2025').value = ''; 
                 updateAnnualAnalysis();
+                initProductDropdowns();
             }
         }
 
@@ -1125,7 +1241,9 @@
         // --- AI Features ---
         async function generateDashboardInsight() {
             // Dashboard filtering applies to insight as well
-            const dashData = state.current2026.filter(item => item.effectivePeriod.startsWith('2026') || item.effectiveDate.startsWith('2026'));
+            let dashData = state.current2026.filter(item => item.effectivePeriod.startsWith('2026') || item.effectiveDate.startsWith('2026'));
+            dashData = dashData.filter(item => item.orderClassification.toUpperCase() === 'SUB' || item.orderType.toUpperCase() === '1X');
+            
             if (dashData.length === 0) { alert("無符合 2026 開頭的資料可供分析。"); return; }
             
             document.getElementById('ai-insight-loading').classList.remove('hidden');
@@ -1241,6 +1359,15 @@
             return rawSbu;
         }
 
+        function mapProductLevel1(cg) {
+            if (!cg) return '未分類';
+            const val = cg.trim().toLowerCase();
+            if (val === 'research & analytics' || val === 'reference management') return 'R&A';
+            if (val === 'books' || val === 'bowker search' || val === 'collections' || val === 'proquest') return 'ProQuest';
+            if (val === 'software academic' || val === 'software public intl') return 'Ex Libris';
+            return '其它 (' + cg + ')';
+        }
+
         function normalizeData(rawRows) {
             return rawRows.map((row, index) => {
                 let uniqueId = row['TrxId'];
@@ -1256,7 +1383,10 @@
                     orderClassification: String(row['OrderClassification'] || ''),
                     rawSbu: String(row['Sbu'] || ''),
                     sbu: mapSBU(row['Sbu']),
-                    productFamily: row['ProductFamily'] || "Unspecified",
+                    productFamily: row['ProductFamily'] || "Unspecified", // 第3層
+                    commissionGroup: String(row['CommissionGroup'] || ''), 
+                    level1: mapProductLevel1(String(row['CommissionGroup'] || '')), // 第1層
+                    businessUnit: String(row['BusinessUnit'] || ''), // 第2層
                     effectivePeriod: String(row['EffectivePeriod'] || ''),
                     effectiveDate: String(row['EffectiveDate'] || ''),
                     originalRow: row
@@ -1299,6 +1429,7 @@
                     document.getElementById('icon-2025').classList.add('text-green-500');
                     updateCustomerDropdown();
                     updateAnnualAnalysis(); // 更新年度分析資料
+                    initProductDropdowns(); // 初始化特定產品分析選項
                     if(state.selectedCustomers.size > 0) analyzeCustomer();
                 } else if (year === '2026') {
                     state.current2026 = data;
@@ -1331,7 +1462,14 @@
         // --- Dashboard & Comparison Logic ---
         function updateDashboard() {
             // Apply filtering logic: Only use Effective date starting with 2026
-            const dashData = state.current2026.filter(item => item.effectivePeriod.startsWith('2026') || item.effectiveDate.startsWith('2026'));
+            let dashData = state.current2026.filter(item => item.effectivePeriod.startsWith('2026') || item.effectiveDate.startsWith('2026'));
+            
+            // 業務邏輯過濾：僅計算 Total Sub (OrderClassification = SUB) 或 1X (OrderType = 1X)
+            dashData = dashData.filter(item => {
+                const isSub = item.orderClassification.toUpperCase() === 'SUB';
+                const is1X = item.orderType.toUpperCase() === '1X';
+                return isSub || is1X;
+            });
             
             if (dashData.length === 0) {
                  document.getElementById('kpi-total-sales').textContent = "$0";
@@ -1404,8 +1542,8 @@
 
         // --- Annual Analysis Logic (2025 Data) ---
         function updateAnnualAnalysis() {
-            const data = state.data2025;
-            if (!data || data.length === 0) {
+            const rawData = state.data2025;
+            if (!rawData || rawData.length === 0) {
                  document.getElementById('annual-total-sales').textContent = "$0";
                  document.getElementById('annual-total-orders').textContent = "0";
                  document.getElementById('annual-active-customers').textContent = "0";
@@ -1416,6 +1554,15 @@
                  if (state.annualTypeChart) state.annualTypeChart.destroy();
                  return;
             }
+
+            // 業務邏輯過濾：僅計算 Total Sub (OrderClassification = SUB) 或 1X (OrderType = 1X)
+            const data = rawData.filter(item => {
+                const isSub = item.orderClassification.toUpperCase() === 'SUB';
+                const is1X = item.orderType.toUpperCase() === '1X';
+                return isSub || is1X;
+            });
+
+            if (data.length === 0) return; // 若過濾後無資料
 
             const totalSales = data.reduce((sum, item) => sum + item.amount, 0);
             document.getElementById('annual-total-sales').textContent = formatCurrency(totalSales);
@@ -1544,6 +1691,243 @@
             });
         }
 
+        // --- Product Analysis Logic ---
+        function updateProductSummaryCards() {
+            let raTotal = 0, pqTotal = 0, exTotal = 0;
+            state.data2025.forEach(d => {
+                if (d.level1 === 'R&A') raTotal += d.amount;
+                else if (d.level1 === 'ProQuest') pqTotal += d.amount;
+                else if (d.level1 === 'Ex Libris') exTotal += d.amount;
+            });
+            document.getElementById('summary-ra').textContent = formatCurrency(raTotal);
+            document.getElementById('summary-proquest').textContent = formatCurrency(pqTotal);
+            document.getElementById('summary-exlibris').textContent = formatCurrency(exTotal);
+            document.getElementById('prod-summary-cards').classList.remove('hidden');
+        }
+
+        function initProductDropdowns() {
+            updateProductSummaryCards();
+
+            const l1Select = document.getElementById('prod-level-1');
+            const l1Set = new Set(state.data2025.map(d => d.level1));
+            
+            l1Select.innerHTML = '<option value="">請選擇 Product Line...</option>';
+            [...l1Set].filter(v => v).sort().forEach(val => {
+                l1Select.innerHTML += `<option value="${val}">${val}</option>`;
+            });
+            
+            resetProdMultiDropdown('bu');
+            resetProdMultiDropdown('pf');
+            
+            document.getElementById('product-analysis-content').classList.add('hidden');
+        }
+
+        function toggleProdDropdown(id) {
+            document.getElementById(id).classList.toggle('hidden');
+        }
+
+        function resetProdMultiDropdown(type) {
+            const btn = document.getElementById(`${type}-dropdown-btn`);
+            const label = document.getElementById(`${type}-dropdown-label`);
+            const container = document.getElementById(`${type}-list-container`);
+            
+            btn.disabled = true;
+            btn.classList.add('bg-gray-100');
+            btn.classList.remove('bg-white');
+            label.textContent = '全選';
+            label.classList.add('text-gray-500');
+            label.classList.remove('text-gray-900');
+            container.innerHTML = '';
+        }
+
+        function populateProdMultiDropdown(type, itemSet, toggleFn) {
+            const btn = document.getElementById(`${type}-dropdown-btn`);
+            const container = document.getElementById(`${type}-list-container`);
+            
+            btn.disabled = false;
+            btn.classList.remove('bg-gray-100');
+            btn.classList.add('bg-white');
+            
+            container.innerHTML = '';
+            const items = [...itemSet].filter(v => v).sort();
+            
+            if(items.length === 0) {
+                container.innerHTML = '<div class="p-2 text-center text-gray-400 text-sm">無選項</div>';
+                return;
+            }
+            
+            items.forEach(val => {
+                const div = document.createElement('div');
+                div.className = 'checkbox-item px-3 py-2 flex items-center cursor-pointer border-b border-gray-50 last:border-0 hover:bg-gray-50';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out cursor-pointer';
+                checkbox.checked = false; // Default unselected -> translates to "All" implicitly
+                
+                div.onclick = (e) => {
+                    if (e.target.tagName !== 'INPUT') {
+                        checkbox.checked = !checkbox.checked;
+                        toggleFn(val, checkbox.checked);
+                    }
+                };
+                
+                checkbox.onclick = (e) => {
+                    e.stopPropagation();
+                    toggleFn(val, e.target.checked);
+                };
+                
+                const labelText = document.createElement('span');
+                labelText.className = 'ml-2 text-sm text-gray-700 select-none';
+                labelText.textContent = val;
+                
+                div.appendChild(checkbox);
+                div.appendChild(labelText);
+                container.appendChild(div);
+            });
+            
+            updateProdDropdownLabel(type, new Set());
+        }
+
+        function updateProdDropdownLabel(type, selectedSet) {
+            const label = document.getElementById(`${type}-dropdown-label`);
+            const count = selectedSet.size;
+            if (count === 0) {
+                label.textContent = "全選";
+                label.classList.add('text-gray-500');
+                label.classList.remove('text-gray-900');
+            } else if (count === 1) {
+                label.textContent = [...selectedSet][0];
+                label.classList.remove('text-gray-500');
+                label.classList.add('text-gray-900');
+            } else {
+                label.textContent = `已選擇 ${count} 項`;
+                label.classList.remove('text-gray-500');
+                label.classList.add('text-gray-900');
+            }
+        }
+
+        function onProdLevel1Change() {
+            const l1 = document.getElementById('prod-level-1').value;
+            state.selectedBUs.clear();
+            state.selectedPFs.clear();
+            
+            if (!l1) {
+                resetProdMultiDropdown('bu');
+                resetProdMultiDropdown('pf');
+                document.getElementById('product-analysis-content').classList.add('hidden');
+                return;
+            }
+
+            const filtered = state.data2025.filter(d => d.level1 === l1);
+            const l2Set = new Set(filtered.map(d => d.businessUnit));
+            populateProdMultiDropdown('bu', l2Set, toggleBuSelection);
+            
+            const l3Set = new Set(filtered.map(d => d.productFamily));
+            populateProdMultiDropdown('pf', l3Set, togglePfSelection);
+            
+            analyzeProduct();
+        }
+
+        function toggleBuSelection(val, isChecked) {
+            if (isChecked) state.selectedBUs.add(val);
+            else state.selectedBUs.delete(val);
+            
+            updateProdDropdownLabel('bu', state.selectedBUs);
+            
+            // Re-populate Product Families based on updated BU
+            const l1 = document.getElementById('prod-level-1').value;
+            let filtered = state.data2025.filter(d => d.level1 === l1);
+            if (state.selectedBUs.size > 0) {
+                filtered = filtered.filter(d => state.selectedBUs.has(d.businessUnit));
+            }
+            
+            state.selectedPFs.clear(); 
+            const l3Set = new Set(filtered.map(d => d.productFamily));
+            populateProdMultiDropdown('pf', l3Set, togglePfSelection);
+            
+            analyzeProduct();
+        }
+
+        function togglePfSelection(val, isChecked) {
+            if (isChecked) state.selectedPFs.add(val);
+            else state.selectedPFs.delete(val);
+            updateProdDropdownLabel('pf', state.selectedPFs);
+            analyzeProduct();
+        }
+
+        function analyzeProduct() {
+            const l1 = document.getElementById('prod-level-1').value;
+            const content = document.getElementById('product-analysis-content');
+            if (!l1) {
+                content.classList.add('hidden');
+                return;
+            }
+            
+            let data = state.data2025.filter(d => d.level1 === l1);
+            if (state.selectedBUs.size > 0) {
+                data = data.filter(d => state.selectedBUs.has(d.businessUnit));
+            }
+            if (state.selectedPFs.size > 0) {
+                data = data.filter(d => state.selectedPFs.has(d.productFamily));
+            }
+            
+            content.classList.remove('hidden');
+            
+            const custAgg = {};
+            data.forEach(d => {
+                if (!custAgg[d.customer]) {
+                    custAgg[d.customer] = { amount: 0, items: [] };
+                }
+                custAgg[d.customer].amount += d.amount;
+                custAgg[d.customer].items.push(d);
+            });
+            
+            const totalSales = data.reduce((sum, d) => sum + d.amount, 0);
+            const totalCusts = Object.keys(custAgg).length;
+            
+            document.getElementById('prod-total-sales').textContent = formatCurrency(totalSales);
+            document.getElementById('prod-total-customers').textContent = totalCusts.toLocaleString();
+            
+            const sortedCusts = Object.entries(custAgg).sort((a,b) => b[1].amount - a[1].amount);
+            const top10 = sortedCusts.slice(0, 10);
+            
+            if (state.prodAnalysisChart) state.prodAnalysisChart.destroy();
+            state.prodAnalysisChart = new Chart(document.getElementById('prodTopCustChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: top10.map(c => c[0].length > 10 ? c[0].substring(0,10)+'...' : c[0]),
+                    datasets: [{
+                        label: '銷售金額',
+                        data: top10.map(c => c[1].amount),
+                        backgroundColor: '#10b981',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+            
+            const tbody = document.getElementById('table-prod-customers');
+            tbody.innerHTML = '';
+            sortedCusts.forEach(c => {
+                const bus = [...new Set(c[1].items.map(i => i.businessUnit).filter(v => v))].join(', ') || '-';
+                const pfs = [...new Set(c[1].items.map(i => i.productFamily).filter(v => v))].join(', ') || '-';
+                
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="table-cell font-semibold text-gray-800">${c[0]}</td>
+                        <td class="table-cell text-xs text-gray-500">${bus}</td>
+                        <td class="table-cell text-xs text-gray-500">${pfs}</td>
+                        <td class="table-cell text-right font-bold text-green-600">${formatCurrency(c[1].amount)}</td>
+                    </tr>
+                `;
+            });
+        }
+
         // --- Performance Analysis Logic ---
         function updatePerformance() {
             let actualTotalSub = 0;
@@ -1664,15 +2048,17 @@
                 'upload': '資料上傳', 
                 'dashboard': '綜合分析儀表板', 
                 'annual': '年度業務分析',
-                'performance': '業績達成分析',
                 'comparison': '主資料差異分析', 
-                'customer': '特定客戶分析' 
+                'customer': '特定客戶分析',
+                'product': '特定產品分析',
+                'performance': '業績達成分析'
             };
             document.getElementById('page-title').textContent = titles[tabId];
             
             // Recalculate on switch if needed
             if(tabId === 'performance') updatePerformance();
             if(tabId === 'annual') updateAnnualAnalysis();
+            if(tabId === 'product' && document.getElementById('prod-level-1').value) analyzeProduct();
         }
 
         switchTab('upload');

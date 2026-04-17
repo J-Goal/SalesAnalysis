@@ -22,7 +22,7 @@
         .sidebar-item { transition: all 0.3s; cursor: pointer; }
         .sidebar-item:hover, .sidebar-item.active { background-color: #374151; border-left: 4px solid #3b82f6; }
         .card { background: white; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1.5rem; }
-        .table-header { @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50; }
+        .table-header { @apply px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50; }
         .table-cell { @apply px-6 py-4 whitespace-nowrap text-sm text-gray-700; }
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -94,7 +94,7 @@
 
         <div class="p-4 text-xs text-gray-400 flex flex-col items-center justify-center space-y-1 border-t border-gray-800">
             <span>&copy; 2026 Sales System</span>
-            <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-500 font-mono mt-1">v2.1.0 | 2026-04-17</span>
+            <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-500 font-mono mt-1">v2.1.1 | 2026-04-17</span>
         </div>
     </aside>
 
@@ -210,6 +210,15 @@
                     </div>
                 </div>
 
+                <!-- Ecosystem Penetration Matrix (Bubble Chart) -->
+                <div class="card">
+                    <h3 class="text-lg font-bold text-gray-700 mb-2"><i class="fas fa-project-diagram text-blue-500 mr-2"></i>客戶生態系滲透矩陣 (Ecosystem Penetration Matrix)</h3>
+                    <p class="text-sm text-gray-500 mb-4">分析各客戶在三大產品線的持有深度。氣泡大小代表「總銷售額」，顏色區分是否擁有 Software 產品。可幫助您快速鎖定交叉銷售目標。</p>
+                    <div class="w-full h-80 relative">
+                        <canvas id="ecosystemBubbleChart"></canvas>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Order Classification Table -->
                     <div class="card">
@@ -218,8 +227,8 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">類型</th>
-                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">業績數字</th>
+                                        <th class="table-header text-left">類型</th>
+                                        <th class="table-header text-right">業績數字</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-classification-body" class="bg-white divide-y divide-gray-200">
@@ -247,12 +256,12 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="table-header">排名</th>
-                                    <th class="table-header">客戶名稱</th>
+                                    <th class="table-header text-center w-16">排名</th>
+                                    <th class="table-header text-left">客戶名稱</th>
                                     <th class="table-header text-right">銷售金額</th>
-                                    <th class="table-header">產品家族</th>
-                                    <th class="table-header">SBU</th>
-                                    <th class="table-header">業績類型</th>
+                                    <th class="table-header text-left">產品家族</th>
+                                    <th class="table-header text-center">SBU</th>
+                                    <th class="table-header text-center">業績類型</th>
                                 </tr>
                             </thead>
                             <tbody id="table-top20-body" class="bg-white divide-y divide-gray-200">
@@ -293,8 +302,8 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">類型</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">業績數字</th>
+                                    <th class="table-header text-left">類型</th>
+                                    <th class="table-header text-right">業績數字</th>
                                 </tr>
                             </thead>
                             <tbody id="table-annual-classification-body" class="bg-white divide-y divide-gray-200">
@@ -337,8 +346,8 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="table-header">排名</th>
-                                    <th class="table-header">客戶名稱</th>
+                                    <th class="table-header text-center w-16">排名</th>
+                                    <th class="table-header text-left">客戶名稱</th>
                                     <th class="table-header text-right">年度總金額</th>
                                     <th class="table-header text-right">佔比</th>
                                 </tr>
@@ -429,9 +438,9 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50 sticky top-0 shadow-sm z-10">
                                     <tr>
-                                        <th class="table-header">客戶名稱</th>
-                                        <th class="table-header">Business Unit</th>
-                                        <th class="table-header">Product Family</th>
+                                        <th class="table-header text-left">客戶名稱</th>
+                                        <th class="table-header text-center">Business Unit</th>
+                                        <th class="table-header text-left">Product Family</th>
                                         <th class="table-header text-right">銷售金額</th>
                                     </tr>
                                 </thead>
@@ -502,8 +511,8 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50 sticky top-0">
                                     <tr>
-                                        <th class="table-header">客戶</th>
-                                        <th class="table-header">產品</th>
+                                        <th class="table-header text-left">客戶</th>
+                                        <th class="table-header text-left">產品</th>
                                         <th class="table-header text-right">金額</th>
                                     </tr>
                                 </thead>
@@ -522,8 +531,8 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50 sticky top-0">
                                     <tr>
-                                        <th class="table-header">客戶</th>
-                                        <th class="table-header">產品</th>
+                                        <th class="table-header text-left">客戶</th>
+                                        <th class="table-header text-left">產品</th>
                                         <th class="table-header text-right">原金額</th>
                                     </tr>
                                 </thead>
@@ -542,8 +551,8 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50 sticky top-0">
                                     <tr>
-                                        <th class="table-header">客戶</th>
-                                        <th class="table-header">產品</th>
+                                        <th class="table-header text-left">客戶</th>
+                                        <th class="table-header text-left">產品</th>
                                         <th class="table-header text-right">舊金額</th>
                                         <th class="table-header text-right">新金額</th>
                                         <th class="table-header text-right">差異</th>
@@ -649,7 +658,7 @@
                                 <thead class="bg-green-50">
                                     <tr>
                                         <th class="px-4 py-2 text-left text-gray-600 font-semibold">產品家族</th>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">SBU</th>
+                                        <th class="px-4 py-2 text-center text-gray-600 font-semibold">SBU</th>
                                         <th class="px-4 py-2 text-right text-gray-600 font-semibold">銷售金額</th>
                                     </tr>
                                 </thead>
@@ -740,33 +749,33 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <!-- Row 1: Total Sub -->
                                 <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Total Sub</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">50%</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
+                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium text-gray-900">Total Sub</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">50%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
                                         $ <input type="number" id="tgt-total-sub" onchange="savePerformanceTargets()" class="w-32 px-2 py-1 border border-gray-300 rounded focus:ring-purple-500 focus:border-purple-500 text-right" value="0">
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-green-600" id="act-total-sub">$0</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-purple-600" id="ach-total-sub">0%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-green-600" id="act-total-sub">$0</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-purple-600" id="ach-total-sub">0%</td>
                                 </tr>
                                 <!-- Row 2: PQ Sub -->
                                 <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">PQ Sub</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">20%</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
+                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium text-gray-900">PQ Sub</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">20%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
                                         $ <input type="number" id="tgt-pq-sub" onchange="savePerformanceTargets()" class="w-32 px-2 py-1 border border-gray-300 rounded focus:ring-purple-500 focus:border-purple-500 text-right" value="0">
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-green-600" id="act-pq-sub">$0</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-purple-600" id="ach-pq-sub">0%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-green-600" id="act-pq-sub">$0</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-purple-600" id="ach-pq-sub">0%</td>
                                 </tr>
                                 <!-- Row 3: New Sub & 1X -->
                                 <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">New Sub & 1X</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">30%</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
+                                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium text-gray-900">New Sub & 1X</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">30%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
                                         $ <input type="number" id="tgt-new-sub" onchange="savePerformanceTargets()" class="w-32 px-2 py-1 border border-gray-300 rounded focus:ring-purple-500 focus:border-purple-500 text-right" value="0">
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-green-600" id="act-new-sub">$0</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-bold text-purple-600" id="ach-new-sub">0%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-green-600" id="act-new-sub">$0</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-purple-600" id="ach-new-sub">0%</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -806,6 +815,7 @@
             
             allProductFamilies: new Set(),
             chartInstance: null,
+            dashboardBubbleChart: null, // 新增：生態系滲透矩陣 (Bubble Chart) 實體
             annualProdChart: null,
             annualSbuChart: null,
             annualTypeChart: null,
@@ -1106,7 +1116,7 @@
                     });
                     newPurchasesBody.innerHTML = '';
                     Object.entries(newProdAgg).sort((a,b)=>b[1].amount - a[1].amount).forEach(([prod, data]) => {
-                        newPurchasesBody.innerHTML += `<tr class="hover:bg-green-50 transition-colors"><td class="px-4 py-3 text-gray-700 font-medium">${prod}</td><td class="px-4 py-3 text-xs text-gray-500">${data.sbu}</td><td class="px-4 py-3 text-right font-bold text-green-600">${formatCurrency(data.amount)}</td></tr>`;
+                        newPurchasesBody.innerHTML += `<tr class="hover:bg-green-50 transition-colors"><td class="px-4 py-3 text-left text-gray-700 font-medium">${prod}</td><td class="px-4 py-3 text-center text-xs text-gray-500">${data.sbu}</td><td class="px-4 py-3 text-right font-bold text-green-600">${formatCurrency(data.amount)}</td></tr>`;
                     });
                 } else {
                     newPurchasesContainer.classList.add('hidden');
@@ -1202,7 +1212,7 @@
                 data.forEach(item => {
                     tbody.innerHTML += `
                         <tr class="border-b border-gray-100">
-                            <td class="py-2 text-gray-700">${item.productFamily}</td>
+                            <td class="py-2 text-left text-gray-700">${item.productFamily}</td>
                             <td class="py-2 text-right font-medium">${formatCurrency(item.amount)}</td>
                         </tr>
                     `;
@@ -1540,6 +1550,7 @@
                  document.getElementById('kpi-active-customers').textContent = "0";
                  document.getElementById('table-classification-body').innerHTML = '';
                  if (state.chartInstance) state.chartInstance.destroy();
+                 if (state.dashboardBubbleChart) state.dashboardBubbleChart.destroy();
                  document.getElementById('table-top20-body').innerHTML = '';
                  return;
             }
@@ -1587,7 +1598,7 @@
             const typeTbody = document.getElementById('table-classification-body');
             typeTbody.innerHTML = '';
             Object.entries(typeStats).sort(([,a], [,b]) => b - a).forEach(([type, amt]) => {
-                typeTbody.innerHTML += `<tr><td class="table-cell font-medium">${type}</td><td class="table-cell text-right">${formatCurrency(amt)}</td></tr>`;
+                typeTbody.innerHTML += `<tr><td class="table-cell text-left font-medium">${type}</td><td class="table-cell text-right">${formatCurrency(amt)}</td></tr>`;
             });
 
             const sbuStats = { "ProQuest": 0, "R&A": 0, "Software": 0, "Other": 0 };
@@ -1603,7 +1614,129 @@
             const top20Body = document.getElementById('table-top20-body');
             top20Body.innerHTML = '';
             [...dashData].sort((a, b) => b.amount - a.amount).slice(0, 20).forEach((item, idx) => {
-                top20Body.innerHTML += `<tr class="hover:bg-gray-50"><td class="table-cell text-gray-500">#${idx + 1}</td><td class="table-cell font-semibold text-gray-800">${item.customer.substring(0,20)}...</td><td class="table-cell text-right text-green-600 font-bold">${formatCurrency(item.amount)}</td><td class="table-cell text-xs">${item.productFamily}</td><td class="table-cell text-xs">${item.sbu}</td><td class="table-cell text-xs">${item.type}</td></tr>`;
+                top20Body.innerHTML += `<tr class="hover:bg-gray-50">
+                    <td class="table-cell text-center text-gray-500">#${idx + 1}</td>
+                    <td class="table-cell text-left font-semibold text-gray-800 whitespace-normal break-words min-w-[200px]">${item.customer}</td>
+                    <td class="table-cell text-right text-green-600 font-bold">${formatCurrency(item.amount)}</td>
+                    <td class="table-cell text-left text-xs">${item.productFamily}</td>
+                    <td class="table-cell text-center text-xs">${item.sbu}</td>
+                    <td class="table-cell text-center text-xs">${item.type}</td>
+                </tr>`;
+            });
+
+            // --- 新增：客戶生態系滲透矩陣 (Bubble Chart) ---
+            const custAgg = {};
+            dashData.forEach(item => {
+                if (!custAgg[item.customer]) {
+                    custAgg[item.customer] = { amount: 0, ra: new Set(), pq: new Set(), sw: new Set() };
+                }
+                custAgg[item.customer].amount += item.amount;
+                if (item.sbu === 'R&A') custAgg[item.customer].ra.add(item.productFamily);
+                else if (item.sbu === 'ProQuest') custAgg[item.customer].pq.add(item.productFamily);
+                else if (item.sbu === 'Software') custAgg[item.customer].sw.add(item.productFamily);
+            });
+
+            const hasSwData = [];
+            const noSwData = [];
+            let maxAmt = 1;
+
+            Object.values(custAgg).forEach(v => {
+                if (v.amount > maxAmt) maxAmt = v.amount;
+            });
+
+            Object.entries(custAgg).forEach(([cust, data]) => {
+                const raCount = data.ra.size;
+                const pqCount = data.pq.size;
+                const swCount = data.sw.size;
+                
+                let crossSell = [];
+                if (swCount === 0) crossSell.push('Software (如 Alma/Primo)');
+                if (raCount === 0) crossSell.push('R&A (如 WoS/InCites)');
+                if (pqCount === 0) crossSell.push('ProQuest');
+                const crossSellText = crossSell.length > 0 ? crossSell.join(', ') : '無 (已全面覆蓋)';
+
+                // 氣泡半徑大小：最小 5，最大 35
+                const r = Math.max(5, Math.sqrt(data.amount / maxAmt) * 35);
+                
+                const pt = {
+                    x: raCount,
+                    y: pqCount,
+                    r: r,
+                    customer: cust,
+                    amount: data.amount,
+                    raCount: raCount,
+                    pqCount: pqCount,
+                    swCount: swCount,
+                    crossSell: crossSellText
+                };
+
+                if (swCount > 0) {
+                    hasSwData.push(pt);
+                } else {
+                    noSwData.push(pt);
+                }
+            });
+
+            const bubbleCtx = document.getElementById('ecosystemBubbleChart').getContext('2d');
+            if (state.dashboardBubbleChart) state.dashboardBubbleChart.destroy();
+            state.dashboardBubbleChart = new Chart(bubbleCtx, {
+                type: 'bubble',
+                data: {
+                    datasets: [
+                        {
+                            label: '已擁有 Software (如 Alma/Primo)',
+                            data: hasSwData,
+                            backgroundColor: 'rgba(59, 130, 246, 0.6)', // Tailwind blue-500
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '未擁有 Software',
+                            data: noSwData,
+                            backgroundColor: 'rgba(156, 163, 175, 0.6)', // Tailwind gray-400
+                            borderColor: 'rgba(156, 163, 175, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: 10
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'R&A 產品持有數' },
+                            beginAtZero: true,
+                            suggestedMax: 4,
+                            ticks: { stepSize: 1 }
+                        },
+                        y: {
+                            title: { display: true, text: 'ProQuest 產品持有數' },
+                            beginAtZero: true,
+                            suggestedMax: 4,
+                            ticks: { stepSize: 1 }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const pt = context.raw;
+                                    return [
+                                        `客戶: ${pt.customer}`,
+                                        `總金額: ${formatCurrency(pt.amount)}`,
+                                        `R&A 數量: ${pt.raCount}`,
+                                        `ProQuest 數量: ${pt.pqCount}`,
+                                        `Software 數量: ${pt.swCount}`,
+                                        `建議 Cross-sell: ${pt.crossSell}`
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
             });
         }
 
@@ -1671,7 +1804,7 @@
             const perfTbody = document.getElementById('table-annual-classification-body');
             perfTbody.innerHTML = '';
             Object.entries(perfStats).sort(([,a], [,b]) => b - a).forEach(([type, amt]) => {
-                perfTbody.innerHTML += `<tr><td class="table-cell font-medium">${type}</td><td class="table-cell text-right">${formatCurrency(amt)}</td></tr>`;
+                perfTbody.innerHTML += `<tr><td class="table-cell text-left font-medium">${type}</td><td class="table-cell text-right">${formatCurrency(amt)}</td></tr>`;
             });
             // ------------------------------------------
 
@@ -1746,8 +1879,8 @@
                 const pct = totalSales > 0 ? (c[1] / totalSales) : 0;
                 tbody.innerHTML += `
                     <tr class="hover:bg-gray-50 transition-colors">
-                        <td class="table-cell text-gray-500">#${idx + 1}</td>
-                        <td class="table-cell font-semibold text-gray-800">${c[0]}</td>
+                        <td class="table-cell text-center text-gray-500">#${idx + 1}</td>
+                        <td class="table-cell text-left font-semibold text-gray-800 whitespace-normal break-words min-w-[200px]">${c[0]}</td>
                         <td class="table-cell text-right text-green-600 font-bold">${formatCurrency(c[1])}</td>
                         <td class="table-cell text-right text-gray-500">
                             <div class="flex items-center justify-end">
@@ -1990,9 +2123,9 @@
                 
                 tbody.innerHTML += `
                     <tr class="hover:bg-gray-50 transition-colors">
-                        <td class="table-cell font-semibold text-gray-800">${c[0]}</td>
-                        <td class="table-cell text-xs text-gray-500">${bus}</td>
-                        <td class="table-cell text-xs text-gray-500">${pfs}</td>
+                        <td class="table-cell text-left font-semibold text-gray-800 whitespace-normal break-words min-w-[200px]">${c[0]}</td>
+                        <td class="table-cell text-center text-xs text-gray-500">${bus}</td>
+                        <td class="table-cell text-left text-xs text-gray-500">${pfs}</td>
                         <td class="table-cell text-right font-bold text-green-600">${formatCurrency(c[1].amount)}</td>
                     </tr>
                 `;
@@ -2103,9 +2236,9 @@
             if (items.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center text-gray-400 text-xs">無資料</td></tr>'; return; }
             items.forEach(item => {
                 let html = '';
-                if (type === 'added') html = `<tr><td class="table-cell text-xs">${item.customer}</td><td class="table-cell text-xs">${item.productFamily}</td><td class="table-cell text-right font-medium text-green-600">${formatCurrency(item.amount)}</td></tr>`;
-                else if (type === 'deleted') html = `<tr><td class="table-cell text-xs">${item.customer}</td><td class="table-cell text-xs">${item.productFamily}</td><td class="table-cell text-right font-medium text-red-600">${formatCurrency(item.amount)}</td></tr>`;
-                else if (type === 'changed') html = `<tr><td class="table-cell text-xs">${item.current.customer}</td><td class="table-cell text-xs">${item.current.productFamily}</td><td class="table-cell text-right text-gray-500">${formatCurrency(item.previous.amount)}</td><td class="table-cell text-right font-bold">${formatCurrency(item.current.amount)}</td><td class="table-cell text-right">${item.current.amount > item.previous.amount ? '↑' : '↓'} ${formatCurrency(item.current.amount - item.previous.amount)}</td></tr>`;
+                if (type === 'added') html = `<tr><td class="table-cell text-left whitespace-normal break-words min-w-[200px] text-xs">${item.customer}</td><td class="table-cell text-left text-xs">${item.productFamily}</td><td class="table-cell text-right font-medium text-green-600">${formatCurrency(item.amount)}</td></tr>`;
+                else if (type === 'deleted') html = `<tr><td class="table-cell text-left whitespace-normal break-words min-w-[200px] text-xs">${item.customer}</td><td class="table-cell text-left text-xs">${item.productFamily}</td><td class="table-cell text-right font-medium text-red-600">${formatCurrency(item.amount)}</td></tr>`;
+                else if (type === 'changed') html = `<tr><td class="table-cell text-left whitespace-normal break-words min-w-[200px] text-xs">${item.current.customer}</td><td class="table-cell text-left text-xs">${item.current.productFamily}</td><td class="table-cell text-right text-gray-500">${formatCurrency(item.previous.amount)}</td><td class="table-cell text-right font-bold">${formatCurrency(item.current.amount)}</td><td class="table-cell text-right">${item.current.amount > item.previous.amount ? '↑' : '↓'} ${formatCurrency(item.current.amount - item.previous.amount)}</td></tr>`;
                 tbody.innerHTML += html;
             });
         }

@@ -94,7 +94,7 @@
 
         <div class="p-4 text-xs text-gray-400 flex flex-col items-center justify-center space-y-1 border-t border-gray-800">
             <span>&copy; 2026 Sales System</span>
-            <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-500 font-mono mt-1">v2.1.1 | 2026-04-17</span>
+            <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-500 font-mono mt-1">v2.2.0 | 2026-04-17</span>
         </div>
     </aside>
 
@@ -256,12 +256,12 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="table-header text-center w-16">排名</th>
-                                    <th class="table-header text-left">客戶名稱</th>
-                                    <th class="table-header text-right">銷售金額</th>
-                                    <th class="table-header text-left">產品家族</th>
-                                    <th class="table-header text-center">SBU</th>
-                                    <th class="table-header text-center">業績類型</th>
+                                    <th class="table-header text-center w-12">排名</th>
+                                    <th class="table-header text-left w-1/3">客戶名稱</th>
+                                    <th class="table-header text-right w-1/5 pr-8">銷售金額</th>
+                                    <th class="table-header text-center w-1/5">產品家族</th>
+                                    <th class="table-header text-center w-24">SBU</th>
+                                    <th class="table-header text-center w-24">業績類型</th>
                                 </tr>
                             </thead>
                             <tbody id="table-top20-body" class="bg-white divide-y divide-gray-200">
@@ -347,9 +347,9 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th class="table-header text-center w-16">排名</th>
-                                    <th class="table-header text-left">客戶名稱</th>
-                                    <th class="table-header text-right">年度總金額</th>
-                                    <th class="table-header text-right">佔比</th>
+                                    <th class="table-header text-left w-1/3">客戶名稱</th>
+                                    <th class="table-header text-right w-1/4 pr-8">年度總金額</th>
+                                    <th class="table-header text-right w-1/4">佔比</th>
                                 </tr>
                             </thead>
                             <tbody id="table-annual-top-cust" class="bg-white divide-y divide-gray-200">
@@ -438,10 +438,10 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50 sticky top-0 shadow-sm z-10">
                                     <tr>
-                                        <th class="table-header text-left">客戶名稱</th>
-                                        <th class="table-header text-center">Business Unit</th>
-                                        <th class="table-header text-left">Product Family</th>
-                                        <th class="table-header text-right">銷售金額</th>
+                                        <th class="table-header text-left w-1/3">客戶名稱</th>
+                                        <th class="table-header text-center w-1/5">Business Unit</th>
+                                        <th class="table-header text-center w-1/5">Product Family</th>
+                                        <th class="table-header text-right w-1/4 pr-8">銷售金額</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-prod-customers" class="bg-white divide-y divide-gray-200">
@@ -511,9 +511,9 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50 sticky top-0">
                                     <tr>
-                                        <th class="table-header text-left">客戶</th>
-                                        <th class="table-header text-left">產品</th>
-                                        <th class="table-header text-right">金額</th>
+                                        <th class="table-header text-left w-2/5">客戶</th>
+                                        <th class="table-header text-center w-1/4">產品</th>
+                                        <th class="table-header text-right w-1/4 pr-8">金額</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-added-body" class="bg-white divide-y divide-gray-200"></tbody>
@@ -531,9 +531,9 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50 sticky top-0">
                                     <tr>
-                                        <th class="table-header text-left">客戶</th>
-                                        <th class="table-header text-left">產品</th>
-                                        <th class="table-header text-right">原金額</th>
+                                        <th class="table-header text-left w-2/5">客戶</th>
+                                        <th class="table-header text-center w-1/4">產品</th>
+                                        <th class="table-header text-right w-1/4 pr-8">原金額</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-deleted-body" class="bg-white divide-y divide-gray-200"></tbody>
@@ -551,11 +551,11 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50 sticky top-0">
                                     <tr>
-                                        <th class="table-header text-left">客戶</th>
-                                        <th class="table-header text-left">產品</th>
-                                        <th class="table-header text-right">舊金額</th>
-                                        <th class="table-header text-right">新金額</th>
-                                        <th class="table-header text-right">差異</th>
+                                        <th class="table-header text-left w-1/3">客戶</th>
+                                        <th class="table-header text-center w-1/5">產品</th>
+                                        <th class="table-header text-right w-1/6">舊金額</th>
+                                        <th class="table-header text-right w-1/6">新金額</th>
+                                        <th class="table-header text-right w-1/6 pr-8">差異</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-changed-body" class="bg-white divide-y divide-gray-200"></tbody>
@@ -657,9 +657,9 @@
                             <table class="w-full text-sm">
                                 <thead class="bg-green-50">
                                     <tr>
-                                        <th class="px-4 py-2 text-left text-gray-600 font-semibold">產品家族</th>
-                                        <th class="px-4 py-2 text-center text-gray-600 font-semibold">SBU</th>
-                                        <th class="px-4 py-2 text-right text-gray-600 font-semibold">銷售金額</th>
+                                        <th class="px-4 py-2 text-center text-gray-600 font-semibold w-1/3">產品家族</th>
+                                        <th class="px-4 py-2 text-center text-gray-600 font-semibold w-1/4">SBU</th>
+                                        <th class="px-4 py-2 text-right text-gray-600 font-semibold w-1/3 pr-6">銷售金額</th>
                                     </tr>
                                 </thead>
                                 <tbody id="new-purchases-body" class="divide-y divide-gray-100"></tbody>
@@ -1116,7 +1116,7 @@
                     });
                     newPurchasesBody.innerHTML = '';
                     Object.entries(newProdAgg).sort((a,b)=>b[1].amount - a[1].amount).forEach(([prod, data]) => {
-                        newPurchasesBody.innerHTML += `<tr class="hover:bg-green-50 transition-colors"><td class="px-4 py-3 text-left text-gray-700 font-medium">${prod}</td><td class="px-4 py-3 text-center text-xs text-gray-500">${data.sbu}</td><td class="px-4 py-3 text-right font-bold text-green-600">${formatCurrency(data.amount)}</td></tr>`;
+                        newPurchasesBody.innerHTML += `<tr class="hover:bg-green-50 transition-colors"><td class="px-4 py-3 text-center text-gray-700 font-medium">${prod}</td><td class="px-4 py-3 text-center text-xs text-gray-500">${data.sbu}</td><td class="px-4 py-3 text-right font-bold text-green-600 pr-6">${formatCurrency(data.amount)}</td></tr>`;
                     });
                 } else {
                     newPurchasesContainer.classList.add('hidden');
@@ -1213,7 +1213,7 @@
                     tbody.innerHTML += `
                         <tr class="border-b border-gray-100">
                             <td class="py-2 text-left text-gray-700">${item.productFamily}</td>
-                            <td class="py-2 text-right font-medium">${formatCurrency(item.amount)}</td>
+                            <td class="py-2 text-right font-medium pr-6">${formatCurrency(item.amount)}</td>
                         </tr>
                     `;
                 });
@@ -1616,9 +1616,9 @@
             [...dashData].sort((a, b) => b.amount - a.amount).slice(0, 20).forEach((item, idx) => {
                 top20Body.innerHTML += `<tr class="hover:bg-gray-50">
                     <td class="table-cell text-center text-gray-500">#${idx + 1}</td>
-                    <td class="table-cell text-left font-semibold text-gray-800 whitespace-normal break-words min-w-[200px]">${item.customer}</td>
-                    <td class="table-cell text-right text-green-600 font-bold">${formatCurrency(item.amount)}</td>
-                    <td class="table-cell text-left text-xs">${item.productFamily}</td>
+                    <td class="table-cell text-left font-semibold text-gray-800 whitespace-normal break-words max-w-[250px] w-1/3">${item.customer}</td>
+                    <td class="table-cell text-right text-green-600 font-bold pr-8">${formatCurrency(item.amount)}</td>
+                    <td class="table-cell text-center text-xs w-1/4">${item.productFamily}</td>
                     <td class="table-cell text-center text-xs">${item.sbu}</td>
                     <td class="table-cell text-center text-xs">${item.type}</td>
                 </tr>`;
@@ -1880,8 +1880,8 @@
                 tbody.innerHTML += `
                     <tr class="hover:bg-gray-50 transition-colors">
                         <td class="table-cell text-center text-gray-500">#${idx + 1}</td>
-                        <td class="table-cell text-left font-semibold text-gray-800 whitespace-normal break-words min-w-[200px]">${c[0]}</td>
-                        <td class="table-cell text-right text-green-600 font-bold">${formatCurrency(c[1])}</td>
+                        <td class="table-cell text-left font-semibold text-gray-800 whitespace-normal break-words max-w-[250px] w-1/3">${c[0]}</td>
+                        <td class="table-cell text-right text-green-600 font-bold pr-8">${formatCurrency(c[1])}</td>
                         <td class="table-cell text-right text-gray-500">
                             <div class="flex items-center justify-end">
                                 <span class="mr-2">${formatPercent(pct)}</span>
@@ -2123,10 +2123,10 @@
                 
                 tbody.innerHTML += `
                     <tr class="hover:bg-gray-50 transition-colors">
-                        <td class="table-cell text-left font-semibold text-gray-800 whitespace-normal break-words min-w-[200px]">${c[0]}</td>
-                        <td class="table-cell text-center text-xs text-gray-500">${bus}</td>
-                        <td class="table-cell text-left text-xs text-gray-500">${pfs}</td>
-                        <td class="table-cell text-right font-bold text-green-600">${formatCurrency(c[1].amount)}</td>
+                        <td class="table-cell text-left font-semibold text-gray-800 whitespace-normal break-words max-w-[250px] w-1/3">${c[0]}</td>
+                        <td class="table-cell text-center text-xs text-gray-500 w-1/5">${bus}</td>
+                        <td class="table-cell text-center text-xs text-gray-500 w-1/5">${pfs}</td>
+                        <td class="table-cell text-right font-bold text-green-600 pr-8 w-1/4">${formatCurrency(c[1].amount)}</td>
                     </tr>
                 `;
             });
@@ -2236,9 +2236,9 @@
             if (items.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center text-gray-400 text-xs">無資料</td></tr>'; return; }
             items.forEach(item => {
                 let html = '';
-                if (type === 'added') html = `<tr><td class="table-cell text-left whitespace-normal break-words min-w-[200px] text-xs">${item.customer}</td><td class="table-cell text-left text-xs">${item.productFamily}</td><td class="table-cell text-right font-medium text-green-600">${formatCurrency(item.amount)}</td></tr>`;
-                else if (type === 'deleted') html = `<tr><td class="table-cell text-left whitespace-normal break-words min-w-[200px] text-xs">${item.customer}</td><td class="table-cell text-left text-xs">${item.productFamily}</td><td class="table-cell text-right font-medium text-red-600">${formatCurrency(item.amount)}</td></tr>`;
-                else if (type === 'changed') html = `<tr><td class="table-cell text-left whitespace-normal break-words min-w-[200px] text-xs">${item.current.customer}</td><td class="table-cell text-left text-xs">${item.current.productFamily}</td><td class="table-cell text-right text-gray-500">${formatCurrency(item.previous.amount)}</td><td class="table-cell text-right font-bold">${formatCurrency(item.current.amount)}</td><td class="table-cell text-right">${item.current.amount > item.previous.amount ? '↑' : '↓'} ${formatCurrency(item.current.amount - item.previous.amount)}</td></tr>`;
+                if (type === 'added') html = `<tr><td class="table-cell text-left whitespace-normal break-words max-w-[250px] w-1/3 text-xs">${item.customer}</td><td class="table-cell text-center w-1/4 text-xs">${item.productFamily}</td><td class="table-cell text-right font-medium text-green-600 pr-8">${formatCurrency(item.amount)}</td></tr>`;
+                else if (type === 'deleted') html = `<tr><td class="table-cell text-left whitespace-normal break-words max-w-[250px] w-1/3 text-xs">${item.customer}</td><td class="table-cell text-center w-1/4 text-xs">${item.productFamily}</td><td class="table-cell text-right font-medium text-red-600 pr-8">${formatCurrency(item.amount)}</td></tr>`;
+                else if (type === 'changed') html = `<tr><td class="table-cell text-left whitespace-normal break-words max-w-[250px] w-1/3 text-xs">${item.current.customer}</td><td class="table-cell text-center w-1/5 text-xs">${item.current.productFamily}</td><td class="table-cell text-right text-gray-500 w-1/6">${formatCurrency(item.previous.amount)}</td><td class="table-cell text-right font-bold w-1/6">${formatCurrency(item.current.amount)}</td><td class="table-cell text-right pr-8 w-1/6">${item.current.amount > item.previous.amount ? '↑' : '↓'} ${formatCurrency(item.current.amount - item.previous.amount)}</td></tr>`;
                 tbody.innerHTML += html;
             });
         }

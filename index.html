@@ -94,7 +94,7 @@
 
         <div class="p-4 text-xs text-gray-400 flex flex-col items-center justify-center space-y-1 border-t border-gray-800">
             <span>&copy; 2026 Sales System</span>
-            <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-500 font-mono mt-1">v2.0.1 | 2026-04-09</span>
+            <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-500 font-mono mt-1">v2.1.0 | 2026-04-17</span>
         </div>
     </aside>
 
@@ -146,7 +146,7 @@
                     <!-- 2026 Upload -->
                     <div class="card border-l-4 border-blue-500">
                         <h3 class="text-lg font-bold text-gray-700 mb-4">上傳2026最新資料</h3>
-                        <p class="text-sm text-gray-500 mb-4">此處上傳的資料將用於「儀表板」、「業績分析」與「客戶分析」。</p>
+                        <p class="text-sm text-gray-500 mb-4">此處上傳的資料將用於「營運總覽」、「達標進度」與「客戶洞察」。</p>
                         <div class="flex items-center justify-center w-full">
                             <label for="file-2026" class="flex flex-col items-center justify-center w-full h-32 border-2 border-blue-300 border-dashed rounded-lg cursor-pointer bg-blue-50 hover:bg-blue-100 transition-colors">
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
@@ -220,7 +220,6 @@
                                     <tr>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">類型</th>
                                         <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">業績數字</th>
-                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">佔比</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-classification-body" class="bg-white divide-y divide-gray-200">
@@ -296,7 +295,6 @@
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">類型</th>
                                     <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">業績數字</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">佔比</th>
                                 </tr>
                             </thead>
                             <tbody id="table-annual-classification-body" class="bg-white divide-y divide-gray-200">
@@ -374,7 +372,7 @@
                 <div class="card bg-gray-50 border-b border-gray-200 sticky top-0 z-10">
                     <div class="flex items-center mb-4">
                         <i class="fas fa-box-open text-blue-500 text-xl mr-2"></i>
-                        <h3 class="text-lg font-bold text-gray-800">產品線表現 (2025年度)</h3>
+                        <h3 class="text-lg font-bold text-gray-800">產品線表現</h3>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
@@ -743,7 +741,7 @@
                                 <!-- Row 1: Total Sub -->
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Total Sub</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">60%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">50%</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
                                         $ <input type="number" id="tgt-total-sub" onchange="savePerformanceTargets()" class="w-32 px-2 py-1 border border-gray-300 rounded focus:ring-purple-500 focus:border-purple-500 text-right" value="0">
                                     </td>
@@ -763,7 +761,7 @@
                                 <!-- Row 3: New Sub & 1X -->
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">New Sub & 1X</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">20%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">30%</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
                                         $ <input type="number" id="tgt-new-sub" onchange="savePerformanceTargets()" class="w-32 px-2 py-1 border border-gray-300 rounded focus:ring-purple-500 focus:border-purple-500 text-right" value="0">
                                     </td>
@@ -775,11 +773,11 @@
                     </div>
                     <div class="mt-4 text-xs text-gray-500 bg-gray-50 p-3 rounded">
                         <strong>邏輯定義說明：</strong><br>
-                        - <strong>Total Sub:</strong> <code>OrderClassification = "SUB"</code> 的所有業績。<br>
-                        - <strong>PQ Sub:</strong> <code>OrderClassification = "SUB"</code> 且 <code>SBU = "ProQuest"</code> 的業績。<br>
-                        - <strong>New Sub & 1X:</strong> 符合以下任一條件之加總：<br>
-                           &nbsp;&nbsp;1. <code>OrderType = "N"</code> 且 <code>OrderClassification = "SUB"</code> 且歸屬於 R&A 或 Ex Libris 或 Innovative。<br>
-                           &nbsp;&nbsp;2. <code>SBU = "R&A"</code> 且 <code>OrderType = "1X"</code>。
+                        - <strong>Total Sub (50%):</strong> <code>OrderClassification = "SUB"</code> 的所有業績。<br>
+                        - <strong>PQ Sub (20%):</strong> <code>OrderClassification = "SUB"</code> 且 <code>SBU = "ProQuest"</code> 的業績。<br>
+                        - <strong>New Sub & 1X (30%):</strong> 符合以下任一條件之實際金額加總：<br>
+                           &nbsp;&nbsp;1. <strong>New Sub:</strong> <code>OrderType = "N"</code> 且 <code>OrderClassification = "SUB"</code> 且 SBU 包含 R&A、Ex Libris 或 Innovative。<br>
+                           &nbsp;&nbsp;2. <strong>1X:</strong> <code>OrderType = "1X"</code> 且 SBU 包含 R&A、Ex Libris、Innovative 或 Information Solutions。
                     </div>
                 </div>
             </div>
@@ -798,6 +796,7 @@
 
         // --- Global State ---
         const state = {
+            currentTab: 'upload',
             data2025: [],
             current2026: [],       // Used for Dashboard & Customer Analysis
             
@@ -852,6 +851,55 @@
                 }
             });
         };
+
+        // --- Status Indicator Logic ---
+        function updateStatusUI(tabId) {
+            const indicator = document.getElementById('status-indicator');
+            const suffixes = {
+                'dashboard': '2026',
+                'annual': '2025',
+                'comparison': '比對',
+                'customer': '綜合',
+                'product': '2025',
+                'performance': '2026'
+            };
+
+            if (tabId === 'upload') {
+                if (state.data2025.length > 0 && state.current2026.length > 0) {
+                    indicator.textContent = "資料已就緒 (全部)";
+                    indicator.className = "font-bold text-green-600";
+                } else if (state.data2025.length > 0) {
+                    indicator.textContent = "資料已就緒 (僅 2025)";
+                    indicator.className = "font-bold text-blue-600";
+                } else if (state.current2026.length > 0) {
+                    indicator.textContent = "資料已就緒 (僅 2026)";
+                    indicator.className = "font-bold text-blue-600";
+                } else {
+                    indicator.textContent = "等待資料";
+                    indicator.className = "font-bold text-yellow-600";
+                }
+                return;
+            }
+
+            let isReady = false;
+            if (tabId === 'annual' || tabId === 'product') {
+                isReady = state.data2025.length > 0;
+            } else if (tabId === 'dashboard' || tabId === 'performance') {
+                isReady = state.current2026.length > 0;
+            } else if (tabId === 'comparison') {
+                isReady = state.compOldData.length > 0 && state.compNewData.length > 0;
+            } else if (tabId === 'customer') {
+                isReady = state.data2025.length > 0 || state.current2026.length > 0;
+            }
+
+            if (isReady) {
+                indicator.textContent = `資料已就緒 (${suffixes[tabId]})`;
+                indicator.className = "font-bold text-green-600";
+            } else {
+                indicator.textContent = `等待資料 (${suffixes[tabId]})`;
+                indicator.className = "font-bold text-yellow-600";
+            }
+        }
 
         // --- Target Storage Logic ---
         function loadPerformanceTargets() {
@@ -1191,6 +1239,7 @@
                         
                         updateAnnualAnalysis(); // 更新年度分析資料
                         initProductDropdowns(); // 初始化特定產品分析選項
+                        updateStatusUI(state.currentTab);
                     }
                 }
             } catch (e) { console.error(e); }
@@ -1213,6 +1262,7 @@
                 document.getElementById('file-2025').value = ''; 
                 updateAnnualAnalysis();
                 initProductDropdowns();
+                updateStatusUI(state.currentTab);
             }
         }
 
@@ -1444,6 +1494,7 @@
                     updateAnnualAnalysis(); // 更新年度分析資料
                     initProductDropdowns(); // 初始化特定產品分析選項
                     if(state.selectedCustomers.size > 0) analyzeCustomer();
+                    updateStatusUI(state.currentTab);
                 } else if (year === '2026') {
                     state.current2026 = data;
                     state.selectedCustomers.clear(); 
@@ -1451,9 +1502,7 @@
                     updateDashboard();
                     updateCustomerDropdown();
                     updatePerformance(); // Update performance tab with new data
-                    document.getElementById('status-indicator').textContent = "資料已就緒 (2026)";
-                    document.getElementById('status-indicator').className = "font-bold text-green-600";
-                    switchTab('dashboard');
+                    switchTab('dashboard'); // internally calls updateStatusUI
                 }
             });
         }
@@ -1469,6 +1518,7 @@
             parseFile(file, (data) => {
                 if(version === 'old') state.compOldData = data;
                 else state.compNewData = data;
+                updateStatusUI(state.currentTab);
             });
         }
 
@@ -1515,9 +1565,13 @@
                 if (isSub && item.sbu === 'ProQuest') actualPqSub += item.amount;
 
                 // 3. New Sub & 1X
-                const isTargetSbuForNew = item.sbu === 'R&A' || item.rawSbu.toUpperCase().includes('EX LIBRIS') || item.rawSbu.toUpperCase().includes('INNOVATIVE');
-                const cond1 = isN && isSub && isTargetSbuForNew;
-                const cond2 = item.sbu === 'R&A' && is1X;
+                const rawSbuUpper = item.rawSbu.toUpperCase();
+                
+                const sbuMatchesNewSub = rawSbuUpper.includes('R&A') || rawSbuUpper.includes('EX LIBRIS') || rawSbuUpper.includes('INNOVATIVE');
+                const cond1 = isN && isSub && sbuMatchesNewSub;
+                
+                const sbuMatches1X = rawSbuUpper.includes('R&A') || rawSbuUpper.includes('EX LIBRIS') || rawSbuUpper.includes('INNOVATIVE') || rawSbuUpper.includes('INFORMATION SOLUTIONS');
+                const cond2 = is1X && sbuMatches1X;
 
                 if (cond1 || cond2) {
                     actualNewSub1x += item.amount;
@@ -1533,7 +1587,7 @@
             const typeTbody = document.getElementById('table-classification-body');
             typeTbody.innerHTML = '';
             Object.entries(typeStats).sort(([,a], [,b]) => b - a).forEach(([type, amt]) => {
-                typeTbody.innerHTML += `<tr><td class="table-cell font-medium">${type}</td><td class="table-cell text-right">${formatCurrency(amt)}</td><td class="table-cell text-right text-gray-500">${formatPercent(totalSales > 0 ? amt / totalSales : 0)}</td></tr>`;
+                typeTbody.innerHTML += `<tr><td class="table-cell font-medium">${type}</td><td class="table-cell text-right">${formatCurrency(amt)}</td></tr>`;
             });
 
             const sbuStats = { "ProQuest": 0, "R&A": 0, "Software": 0, "Other": 0 };
@@ -1595,9 +1649,13 @@
                 if (isSub) actualTotalSub += item.amount;
                 if (isSub && item.sbu === 'ProQuest') actualPqSub += item.amount;
 
-                const isTargetSbuForNew = item.sbu === 'R&A' || item.rawSbu.toUpperCase().includes('EX LIBRIS') || item.rawSbu.toUpperCase().includes('INNOVATIVE');
-                const cond1 = isN && isSub && isTargetSbuForNew;
-                const cond2 = item.sbu === 'R&A' && is1X;
+                const rawSbuUpper = item.rawSbu.toUpperCase();
+                
+                const sbuMatchesNewSub = rawSbuUpper.includes('R&A') || rawSbuUpper.includes('EX LIBRIS') || rawSbuUpper.includes('INNOVATIVE');
+                const cond1 = isN && isSub && sbuMatchesNewSub;
+                
+                const sbuMatches1X = rawSbuUpper.includes('R&A') || rawSbuUpper.includes('EX LIBRIS') || rawSbuUpper.includes('INNOVATIVE') || rawSbuUpper.includes('INFORMATION SOLUTIONS');
+                const cond2 = is1X && sbuMatches1X;
 
                 if (cond1 || cond2) {
                     actualNewSub1x += item.amount;
@@ -1613,7 +1671,7 @@
             const perfTbody = document.getElementById('table-annual-classification-body');
             perfTbody.innerHTML = '';
             Object.entries(perfStats).sort(([,a], [,b]) => b - a).forEach(([type, amt]) => {
-                perfTbody.innerHTML += `<tr><td class="table-cell font-medium">${type}</td><td class="table-cell text-right">${formatCurrency(amt)}</td><td class="table-cell text-right text-gray-500">${formatPercent(totalSales > 0 ? amt / totalSales : 0)}</td></tr>`;
+                perfTbody.innerHTML += `<tr><td class="table-cell font-medium">${type}</td><td class="table-cell text-right">${formatCurrency(amt)}</td></tr>`;
             });
             // ------------------------------------------
 
@@ -1966,12 +2024,13 @@
                 }
 
                 // 3. New Sub & 1X
-                // 條件 A: 屬於 R&A 或 Ex Libris 或 Innovative 的新單 (New Sub)
-                const isTargetSbuForNew = item.sbu === 'R&A' || item.rawSbu.toUpperCase().includes('EX LIBRIS') || item.rawSbu.toUpperCase().includes('INNOVATIVE');
-                const cond1 = isN && isSub && isTargetSbuForNew;
+                const rawSbuUpper = item.rawSbu.toUpperCase();
                 
-                // 條件 B: R&A 中的 1X
-                const cond2 = item.sbu === 'R&A' && is1X;
+                const sbuMatchesNewSub = rawSbuUpper.includes('R&A') || rawSbuUpper.includes('EX LIBRIS') || rawSbuUpper.includes('INNOVATIVE');
+                const cond1 = isN && isSub && sbuMatchesNewSub;
+                
+                const sbuMatches1X = rawSbuUpper.includes('R&A') || rawSbuUpper.includes('EX LIBRIS') || rawSbuUpper.includes('INNOVATIVE') || rawSbuUpper.includes('INFORMATION SOLUTIONS');
+                const cond2 = is1X && sbuMatches1X;
 
                 if (cond1 || cond2) {
                     actualNewSub1x += item.amount;
@@ -1999,7 +2058,7 @@
             document.getElementById('ach-new-sub').textContent = formatPercent(achNewSub);
 
             // Calculate Total Weighted Achievement
-            const totalWeightedAch = (achTotalSub * 0.6) + (achPqSub * 0.2) + (achNewSub * 0.2);
+            const totalWeightedAch = (achTotalSub * 0.5) + (achPqSub * 0.2) + (achNewSub * 0.3);
             document.getElementById('perf-total-achieved').textContent = formatPercent(totalWeightedAch);
         }
 
@@ -2052,6 +2111,7 @@
         }
 
         function switchTab(tabId) {
+            state.currentTab = tabId;
             document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active', 'bg-gray-800', 'border-l-4', 'border-blue-500'));
             document.getElementById('nav-' + tabId).classList.add('active');
             document.querySelectorAll('#content-area > div').forEach(el => el.classList.add('hidden'));
@@ -2066,7 +2126,10 @@
                 'product': '產品線表現',
                 'performance': '達標進度'
             };
+            
             document.getElementById('page-title').textContent = titles[tabId];
+            
+            updateStatusUI(tabId);
             
             // Recalculate on switch if needed
             if(tabId === 'performance') updatePerformance();

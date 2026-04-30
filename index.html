@@ -83,9 +83,23 @@
 
     <!-- Sidebar -->
     <aside class="w-64 bg-gray-900 text-white flex flex-col shadow-xl z-20">
-        <div class="h-16 flex items-center justify-center border-b border-gray-700">
-            <h1 class="text-xl font-bold tracking-wider"><i class="fas fa-chart-line mr-2"></i>業績戰情室</h1>
+        <!-- 優化 Logo 區塊設計 -->
+        <div class="h-16 flex items-center justify-center border-b border-gray-800 bg-gray-900">
+            <div class="flex items-center gap-3 select-none">
+                <div class="bg-gradient-to-br from-blue-500 to-indigo-600 p-2 rounded-xl shadow-lg border border-blue-400/30">
+                    <!-- 使用疊加層次概念的 SVG Icon 象徵大數據與產品整合 -->
+                    <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </div>
+                <h1 class="text-xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-100 to-blue-400">
+                    業績戰情室
+                </h1>
+            </div>
         </div>
+        
         <nav class="flex-1 py-6 overflow-y-auto">
             <div onclick="switchTab('upload')" id="nav-upload" class="sidebar-item active px-6 py-4 flex items-center">
                 <i class="fas fa-cloud-upload-alt w-6"></i>
@@ -126,7 +140,8 @@
 
         <div class="p-4 text-xs text-gray-400 flex flex-col items-center justify-center space-y-1 border-t border-gray-800">
             <span>&copy; 2026 Sales System</span>
-            <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-500 font-mono mt-1">v2.4.9 | 2026-04-20</span>
+            <!-- 版號進階 v2.5.1: 左側選單現代化 Logo 設計 -->
+            <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-500 font-mono mt-1">v2.5.1 | 2026-04-20</span>
         </div>
     </aside>
 
@@ -776,7 +791,7 @@
                             <div class="flex gap-2">
                                 <input type="text" id="ai-custom-prompt" placeholder="例如：這是一間醫學大學，請針對其研究需求給予擴展資源的建議..." class="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded text-sm text-white focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 placeholder-gray-400">
                                 <button id="btn-pitch-ai" onclick="generateSalesPitch()" class="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-gray-900 font-bold py-2 px-4 rounded shadow-md transform transition hover:scale-105 flex items-center text-sm whitespace-nowrap">
-                                    <i class="fas fa-crosshairs mr-2"></i> ✨ 生成業務戰略分析
+                                    <i class="fas fa-crosshairs mr-2"></i> ✨ AI銷售建議
                                 </button>
                                 <button id="btn-pitch-stop" onclick="stopSalesPitch()" class="hidden bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded shadow-md transform transition hover:scale-105 flex items-center text-sm whitespace-nowrap">
                                     <i class="fas fa-stop-circle mr-2"></i> 停止

@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>業績戰情室 (Sales Analysis System)</title>
+    
+    <!-- 網頁標籤與書籤列專屬 Logo (Favicon) - 採用內嵌 SVG 確保單一檔案獨立性 -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234f46e5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='12 2 2 7 12 12 22 7 12 2'%3E%3C/polygon%3E%3Cpolyline points='2 17 12 22 22 17'%3E%3C/polyline%3E%3Cpolyline points='2 12 12 17 22 12'%3E%3C/polyline%3E%3C/svg%3E">
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
@@ -140,8 +144,8 @@
 
         <div class="p-4 text-xs text-gray-400 flex flex-col items-center justify-center space-y-1 border-t border-gray-800">
             <span>&copy; 2026 Sales System</span>
-            <!-- 版號進階 v2.5.1: 左側選單現代化 Logo 設計 -->
-            <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-500 font-mono mt-1">v2.5.1 | 2026-04-20</span>
+            <!-- 版號更新 v2.4.9: 新增書籤列/網頁標籤專屬 Favicon Logo -->
+            <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-500 font-mono mt-1">v2.4.9 | 2026-04-20</span>
         </div>
     </aside>
 
@@ -367,7 +371,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Top 15 Products -->
                     <div class="card">
-                        <h3 class="text-lg font-bold text-gray-700 mb-4"><i class="fas fa-trophy text-yellow-500 mr-2"></i>Top 15 暢銷產品家族</h3>
+                        <h3 class="text-lg font-bold text-gray-700 mb-4"><i class="fas fa-trophy text-yellow-500 mr-2"></i>Top 15 暢暢產品家族</h3>
                         <div class="w-full h-80 relative">
                             <canvas id="annualTopProdChart"></canvas>
                         </div>

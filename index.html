@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>業績戰情室 (Sales Analysis System)</title>
     
-    <!-- 網頁標籤與書籤列專屬 Logo (Favicon) - 採用內嵌 SVG 確保單一檔案獨立性 -->
+    <!-- 網頁標籤與書籤列專屬 Logo (Favicon) -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234f46e5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='12 2 2 7 12 12 22 7 12 2'%3E%3C/polygon%3E%3Cpolyline points='2 17 12 22 22 17'%3E%3C/polyline%3E%3Cpolyline points='2 12 12 17 22 12'%3E%3C/polyline%3E%3C/svg%3E">
     
     <!-- Tailwind CSS -->
@@ -22,76 +22,54 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     
     <style>
-        body { 
-            font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; 
-            background-color: #f3f4f6; 
-        }
-        .sidebar-item { 
-            transition: all 0.3s; 
-            cursor: pointer; 
-        }
-        .sidebar-item:hover, .sidebar-item.active { 
-            background-color: #374151; 
-            border-left: 4px solid #3b82f6; 
-        }
-        .card { 
-            background: white; 
-            border-radius: 0.5rem; 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
-            padding: 1.5rem; 
-        }
-        .table-header { 
-            @apply px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50; 
-        }
-        .table-cell { 
-            @apply px-6 py-4 whitespace-nowrap text-sm text-gray-700; 
-        }
+        body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background-color: #f3f4f6; }
+        .sidebar-item { transition: all 0.3s; cursor: pointer; }
+        .sidebar-item:hover, .sidebar-item.active { background-color: #374151; border-left: 4px solid #3b82f6; }
+        .card { background: white; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1.5rem; }
+        .table-header { @apply px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50; }
+        .table-cell { @apply px-6 py-4 whitespace-nowrap text-sm text-gray-700; }
         
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
         .fade-in { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { 
-            from { opacity: 0; transform: translateY(10px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Markdown Styles for AI Content */
         .prose h1, .prose h2, .prose h3 { margin-top: 1em; margin-bottom: 0.5em; font-weight: bold; color: #1f2937; }
         .prose p { margin-bottom: 1em; line-height: 1.6; }
         .prose ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 1em; }
         .prose strong { color: #2563eb; }
 
-        /* Loading Spinner */
-        .spinner { 
-            border: 4px solid rgba(0, 0, 0, 0.1); 
-            width: 36px; height: 36px; 
-            border-radius: 50%; 
-            border-left-color: #3b82f6; 
-            animation: spin 1s ease infinite; 
-        }
-        @keyframes spin { 
-            0% { transform: rotate(0deg); } 
-            100% { transform: rotate(360deg); } 
-        }
+        .spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #3b82f6; animation: spin 1s ease infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Custom Dropdown Styles */
         .cust-dropdown-content { max-height: 300px; overflow-y: auto; }
         .checkbox-item:hover { background-color: #f3f4f6; }
+
+        .matrix-cell-steady { background-color: #dcfce7; color: #166534; font-weight: bold; text-align: center; } /* V */
+        .matrix-cell-new { background-color: #fef08a; color: #854d0e; font-weight: bold; text-align: center; } /* 新訂 */
+        .matrix-cell-drop { background-color: #fecaca; color: #991b1b; font-weight: bold; text-align: center; } /* X */
+        .matrix-cell-none { background-color: #f9fafb; color: #d1d5db; text-align: center; } 
+        
+        /* 產品線群組表頭專屬顏色 */
+        .matrix-header-group { border-bottom: 2px solid #e5e7eb; text-align: center; font-weight: bold; padding-bottom: 0.5rem; color: white; }
+        .bg-group-ra { background-color: #4f46e5; } /* Indigo 600 */
+        .bg-group-pq { background-color: #db2777; } /* Pink 600 */
+        .bg-group-ex { background-color: #0891b2; } /* Cyan 600 */
+        .bg-group-other { background-color: #4b5563; } /* Gray 600 */
+
+        .writing-vertical { writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); max-height: 150px; }
+        .pf-sortable:hover { background-color: #e5e7eb; cursor: pointer; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden">
 
-    <!-- Sidebar -->
     <aside class="w-64 bg-gray-900 text-white flex flex-col shadow-xl z-20">
-        <!-- 優化 Logo 區塊設計 -->
         <div class="h-16 flex items-center justify-center border-b border-gray-800 bg-gray-900">
             <div class="flex items-center gap-3 select-none">
                 <div class="bg-gradient-to-br from-blue-500 to-indigo-600 p-2 rounded-xl shadow-lg border border-blue-400/30">
-                    <!-- 使用疊加層次概念的 SVG Icon 象徵大數據與產品整合 -->
                     <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
                         <polyline points="2 17 12 22 22 17"></polyline>
@@ -109,6 +87,12 @@
                 <i class="fas fa-cloud-upload-alt w-6"></i>
                 <span class="font-medium">資料上傳</span>
             </div>
+            
+            <div onclick="switchTab('market')" id="nav-market" class="sidebar-item px-6 py-4 flex items-center bg-indigo-900/50 border-l-4 border-transparent hover:border-indigo-400 mt-2 mb-2">
+                <i class="fas fa-globe-asia w-6 text-indigo-300"></i>
+                <span class="font-bold text-indigo-100">市場總覽 (團隊)</span>
+            </div>
+
             <div onclick="switchTab('dashboard')" id="nav-dashboard" class="sidebar-item px-6 py-4 flex items-center">
                 <i class="fas fa-tachometer-alt w-6"></i>
                 <span class="font-medium">營運總覽</span>
@@ -135,7 +119,6 @@
             </div>
         </nav>
 
-        <!-- API Key Input -->
         <div class="p-4 border-t border-gray-700">
             <label class="text-xs text-gray-400 block mb-1">Gemini API Key (選填)</label>
             <input type="password" id="api-key-input" placeholder="Enter API Key" onchange="saveApiKey()" class="w-full px-2 py-1 text-xs text-gray-900 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -144,14 +127,12 @@
 
         <div class="p-4 text-xs text-gray-400 flex flex-col items-center justify-center space-y-1 border-t border-gray-800">
             <span>&copy; 2026 Sales System</span>
-            <!-- 版號進位 v2.5.0: 新增 2025 有效訂單數 (ContractNumber 計算) -->
-            <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-500 font-mono mt-1">v2.5.0 | 2026-04-20</span>
+            <!-- v2.6.4: 徹底修復遺失的 Reference 邏輯 (包含 updateCustomerDropdown) -->
+            <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-500 font-mono mt-1">v2.6.4 | 2026-04-20</span>
         </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="flex-1 flex flex-col overflow-hidden relative">
-        <!-- Header -->
         <header class="h-16 bg-white shadow-sm flex items-center justify-between px-8 z-10">
             <h2 id="page-title" class="text-2xl font-bold text-gray-800">資料上傳</h2>
             <div class="flex items-center space-x-4">
@@ -161,20 +142,17 @@
             </div>
         </header>
 
-        <!-- Content Area -->
         <div id="content-area" class="flex-1 overflow-auto p-8 relative">
             
             <!-- VIEW: UPLOAD -->
             <div id="view-upload" class="space-y-6 fade-in">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- 2025 Upload -->
                     <div class="card border-l-4 border-gray-400 relative">
                          <div id="storage-indicator-2025" class="absolute top-2 right-2 hidden">
                             <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full font-semibold" title="資料已儲存於瀏覽器">
                                 <i class="fas fa-save mr-1"></i> 已快取
                             </span>
                         </div>
-
                         <h3 class="text-lg font-bold text-gray-700 mb-4">上傳2025全年資料 (Holding)</h3>
                         <p class="text-sm text-gray-500 mb-4">請上傳去年度的完整資料以供參考。系統會自動記憶此次上傳的檔案。</p>
                         <div class="flex items-center justify-center w-full">
@@ -193,7 +171,6 @@
                         </div>
                     </div>
 
-                    <!-- 2026 Upload -->
                     <div class="card border-l-4 border-blue-500">
                         <h3 class="text-lg font-bold text-gray-700 mb-4">上傳2026最新資料</h3>
                         <p class="text-sm text-gray-500 mb-4">此處上傳的資料將用於「營運總覽」、「達標進度」與「客戶洞察」。</p>
@@ -222,9 +199,115 @@
                 </div>
             </div>
 
+            <!-- VIEW: MARKET OVERVIEW (市場總覽 - White Space Analysis) -->
+            <div id="view-market" class="hidden space-y-6 fade-in">
+                
+                <div class="card border-t-4 border-indigo-500 shadow-md">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800"><i class="fas fa-users mr-2 text-indigo-500"></i>團隊市場資料上傳區 (White Space Analysis)</h3>
+                            <p class="text-sm text-gray-500 mt-2 max-w-3xl">請上傳團隊各 AM 的歷史 (2025) 與最新 (2026) 資料。系統會透過 Item (R欄) 分析台灣 (TW) 客戶在各產品線的跨年度動態變化。<br><span class="font-bold text-indigo-600">無須全數上傳，只要有任何一份檔案即可點擊右側按鈕開始分析。</span></p>
+                        </div>
+                        <button onclick="runMarketAnalysis()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform transition hover:-translate-y-1 flex items-center shrink-0">
+                            <i class="fas fa-chart-network mr-2 text-xl"></i> 開始分析
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- AM1 -->
+                        <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 shadow-sm relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-1 h-full bg-indigo-300"></div>
+                            <h4 class="font-bold text-gray-700 mb-4 border-b pb-2 flex items-center"><i class="fas fa-user-tie mr-2 text-indigo-400"></i>AM 1 負責區域</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-1">2025 歷史資料</label>
+                                    <input type="file" id="mkt-file-am1-25" class="text-sm w-full file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300 cursor-pointer" accept=".csv, .xlsx, .xls" onchange="handleMarketFile(event, 'am1_25')">
+                                    <div id="mkt-info-am1-25" class="text-xs text-green-600 hidden mt-1.5 font-medium"><i class="fas fa-check-circle mr-1"></i>已載入</div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-blue-500 mb-1">2026 最新資料</label>
+                                    <input type="file" id="mkt-file-am1-26" class="text-sm w-full file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 cursor-pointer" accept=".csv, .xlsx, .xls" onchange="handleMarketFile(event, 'am1_26')">
+                                    <div id="mkt-info-am1-26" class="text-xs text-blue-600 hidden mt-1.5 font-medium"><i class="fas fa-check-circle mr-1"></i>已載入</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- AM2 -->
+                        <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 shadow-sm relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-1 h-full bg-indigo-400"></div>
+                            <h4 class="font-bold text-gray-700 mb-4 border-b pb-2 flex items-center"><i class="fas fa-user-tie mr-2 text-indigo-400"></i>AM 2 負責區域</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-1">2025 歷史資料</label>
+                                    <input type="file" id="mkt-file-am2-25" class="text-sm w-full file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300 cursor-pointer" accept=".csv, .xlsx, .xls" onchange="handleMarketFile(event, 'am2_25')">
+                                    <div id="mkt-info-am2-25" class="text-xs text-green-600 hidden mt-1.5 font-medium"><i class="fas fa-check-circle mr-1"></i>已載入</div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-blue-500 mb-1">2026 最新資料</label>
+                                    <input type="file" id="mkt-file-am2-26" class="text-sm w-full file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 cursor-pointer" accept=".csv, .xlsx, .xls" onchange="handleMarketFile(event, 'am2_26')">
+                                    <div id="mkt-info-am2-26" class="text-xs text-blue-600 hidden mt-1.5 font-medium"><i class="fas fa-check-circle mr-1"></i>已載入</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AM3 -->
+                        <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 shadow-sm relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-1 h-full bg-indigo-500"></div>
+                            <h4 class="font-bold text-gray-700 mb-4 border-b pb-2 flex items-center"><i class="fas fa-user-tie mr-2 text-indigo-400"></i>AM 3 負責區域</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 mb-1">2025 歷史資料</label>
+                                    <input type="file" id="mkt-file-am3-25" class="text-sm w-full file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300 cursor-pointer" accept=".csv, .xlsx, .xls" onchange="handleMarketFile(event, 'am3_25')">
+                                    <div id="mkt-info-am3-25" class="text-xs text-green-600 hidden mt-1.5 font-medium"><i class="fas fa-check-circle mr-1"></i>已載入</div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-blue-500 mb-1">2026 最新資料</label>
+                                    <input type="file" id="mkt-file-am3-26" class="text-sm w-full file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 cursor-pointer" accept=".csv, .xlsx, .xls" onchange="handleMarketFile(event, 'am3_26')">
+                                    <div id="mkt-info-am3-26" class="text-xs text-blue-600 hidden mt-1.5 font-medium"><i class="fas fa-check-circle mr-1"></i>已載入</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="market-matrix-container" class="card hidden">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 gap-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800">全市場動態矩陣 (Market White Space Matrix - TW)</h3>
+                            <p class="text-xs text-gray-500 mt-1">點擊欄位名稱可依該產品持有狀況排序。使用搜尋框可快速定位客戶。</p>
+                        </div>
+                        
+                        <div class="flex flex-wrap items-center gap-4">
+                            <div class="flex items-center space-x-3 text-xs bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200">
+                                <span class="flex items-center"><span class="w-3 h-3 bg-green-100 border border-green-300 inline-block mr-1"></span> 續訂 (V)</span>
+                                <span class="flex items-center"><span class="w-3 h-3 bg-yellow-100 border border-yellow-300 inline-block mr-1"></span> 新訂</span>
+                                <span class="flex items-center"><span class="w-3 h-3 bg-orange-100 border border-orange-300 inline-block mr-1"></span> 合約未走完 (Open)</span>
+                                <span class="flex items-center"><span class="w-3 h-3 bg-red-100 border border-red-300 inline-block mr-1"></span> 停訂 (X)</span>
+                                <span class="flex items-center"><span class="w-3 h-3 bg-gray-50 border border-gray-200 inline-block mr-1"></span> 未持有</span>
+                            </div>
+                            
+                            <div class="relative">
+                                <input type="text" id="market-search-input" placeholder="搜尋客戶名稱..." onkeyup="filterMarketMatrix()" class="pl-8 pr-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 w-48 transition-all">
+                                <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400"></i>
+                            </div>
+                            
+                            <button onclick="exportMarketMatrix()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow flex items-center transition-colors">
+                                <i class="fas fa-file-excel mr-2"></i> 匯出 Excel
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto max-h-[600px] border border-gray-200 rounded-lg shadow-inner">
+                        <table class="min-w-full divide-y divide-gray-300" id="market-table">
+                            <thead id="market-matrix-head" class="bg-gray-100 sticky top-0 z-20 shadow-sm"></thead>
+                            <tbody id="market-matrix-body" class="bg-white divide-y divide-gray-200"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!-- VIEW: DASHBOARD (營運總覽) -->
             <div id="view-dashboard" class="hidden space-y-6 fade-in">
-                <!-- Gemini Insight Section -->
                 <div class="card bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-100 mb-6">
                     <div class="flex justify-between items-start">
                         <div>
@@ -240,15 +323,10 @@
                             </button>
                         </div>
                     </div>
-                    <div id="ai-insight-result" class="hidden mt-4 pt-4 border-t border-indigo-200 prose max-w-none text-sm text-gray-700">
-                        <!-- AI content goes here -->
-                    </div>
-                    <div id="ai-insight-loading" class="hidden mt-4 flex justify-center">
-                        <div class="spinner"></div>
-                    </div>
+                    <div id="ai-insight-result" class="hidden mt-4 pt-4 border-t border-indigo-200 prose max-w-none text-sm text-gray-700"></div>
+                    <div id="ai-insight-loading" class="hidden mt-4 flex justify-center"><div class="spinner"></div></div>
                 </div>
 
-                <!-- Top Stats Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="card bg-gradient-to-br from-blue-500 to-blue-600 text-white">
                         <div class="text-blue-100 text-sm font-medium uppercase">2026 總銷售額 (YTD)</div>
@@ -265,7 +343,6 @@
                     </div>
                 </div>
 
-                <!-- Ecosystem Penetration Matrix (Bubble Chart) -->
                 <div class="card">
                     <h3 class="text-lg font-bold text-gray-700 mb-2"><i class="fas fa-project-diagram text-blue-500 mr-2"></i>客戶生態系滲透矩陣 (Ecosystem Penetration Matrix)</h3>
                     <p class="text-sm text-gray-500 mb-4">分析各客戶在三大產品線的持有深度。氣泡大小代表「總銷售額」，顏色區分是否擁有 Software 產品。可幫助您快速鎖定交叉銷售目標。</p>
@@ -275,7 +352,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Order Classification Table -->
                     <div class="card">
                         <h3 class="text-lg font-bold text-gray-700 mb-4">業績達成項目分析</h3>
                         <div class="overflow-x-auto">
@@ -286,14 +362,10 @@
                                         <th class="table-header text-right">業績數字</th>
                                     </tr>
                                 </thead>
-                                <tbody id="table-classification-body" class="bg-white divide-y divide-gray-200">
-                                    <!-- Dynamic Data -->
-                                </tbody>
+                                <tbody id="table-classification-body" class="bg-white divide-y divide-gray-200"></tbody>
                             </table>
                         </div>
                     </div>
-
-                    <!-- Pie Chart -->
                     <div class="card flex flex-col justify-between">
                         <div class="w-full flex flex-col items-center">
                             <h3 class="text-sm font-bold text-gray-700 mb-2 w-full text-left">SBU 營收分佈</h3>
@@ -304,7 +376,6 @@
                     </div>
                 </div>
 
-                <!-- Top 20 Customers -->
                 <div class="card">
                     <h3 class="text-lg font-bold text-gray-700 mb-4">前 20 大訂單 (Top 20 Orders)</h3>
                     <div class="overflow-x-auto">
@@ -319,9 +390,7 @@
                                     <th class="table-header text-center w-24">業績類型</th>
                                 </tr>
                             </thead>
-                            <tbody id="table-top20-body" class="bg-white divide-y divide-gray-200">
-                                <!-- Dynamic Data -->
-                            </tbody>
+                            <tbody id="table-top20-body" class="bg-white divide-y divide-gray-200"></tbody>
                         </table>
                     </div>
                 </div>
@@ -334,7 +403,6 @@
                     <p class="text-sm text-indigo-600 mt-1">本區塊專門分析您上傳的 2025 年完整歷史資料，協助您發掘去年的強勢產品與核心客戶，為新年度制定銷售策略。</p>
                 </div>
 
-                <!-- KPIs -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div class="card bg-white border-l-4 border-blue-500">
                         <div class="text-gray-500 text-sm font-medium uppercase">2025 年度總銷售額</div>
@@ -344,7 +412,6 @@
                         <div class="text-gray-500 text-sm font-medium uppercase">2025 總訂單數</div>
                         <div class="text-3xl font-bold mt-2 text-gray-800" id="annual-total-orders">0</div>
                     </div>
-                    <!-- 新增：有效訂單數 -->
                     <div class="card bg-white border-l-4 border-yellow-500">
                         <div class="text-gray-500 text-sm font-medium uppercase">2025 有效訂單數</div>
                         <div class="text-3xl font-bold mt-2 text-gray-800" id="annual-valid-orders">0</div>
@@ -355,7 +422,6 @@
                     </div>
                 </div>
 
-                <!-- Annual Performance Breakdown -->
                 <div class="card">
                     <h3 class="text-lg font-bold text-gray-700 mb-4"><i class="fas fa-bullseye text-purple-500 mr-2"></i>業績達成項目分析 (2025 年度總結)</h3>
                     <div class="overflow-x-auto">
@@ -366,15 +432,12 @@
                                     <th class="table-header text-right">業績數字</th>
                                 </tr>
                             </thead>
-                            <tbody id="table-annual-classification-body" class="bg-white divide-y divide-gray-200">
-                                <!-- Dynamic Data -->
-                            </tbody>
+                            <tbody id="table-annual-classification-body" class="bg-white divide-y divide-gray-200"></tbody>
                         </table>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Top 15 Products -->
                     <div class="card">
                         <h3 class="text-lg font-bold text-gray-700 mb-4"><i class="fas fa-trophy text-yellow-500 mr-2"></i>Top 15 暢銷產品家族</h3>
                         <div class="w-full h-80 relative">
@@ -382,7 +445,6 @@
                         </div>
                     </div>
 
-                    <!-- Analysis Angles: SBU & OrderType -->
                     <div class="card flex flex-col justify-between">
                         <div class="w-full flex flex-col items-center">
                             <h3 class="text-sm font-bold text-gray-700 mb-2 w-full text-left">SBU 營收分佈</h3>
@@ -399,7 +461,6 @@
                     </div>
                 </div>
 
-                <!-- Top 15 Customers -->
                 <div class="card">
                     <h3 class="text-lg font-bold text-gray-700 mb-4"><i class="fas fa-crown text-yellow-500 mr-2"></i>Top 15 貢獻客戶</h3>
                     <div class="overflow-x-auto">
@@ -412,8 +473,7 @@
                                     <th class="table-header text-right w-1/4">佔比</th>
                                 </tr>
                             </thead>
-                            <tbody id="table-annual-top-cust" class="bg-white divide-y divide-gray-200">
-                            </tbody>
+                            <tbody id="table-annual-top-cust" class="bg-white divide-y divide-gray-200"></tbody>
                         </table>
                     </div>
                 </div>
@@ -421,8 +481,6 @@
 
             <!-- VIEW: PRODUCT ANALYSIS (產品線表現) -->
             <div id="view-product" class="hidden space-y-6 fade-in">
-                
-                <!-- Product Line Summary Cards -->
                 <div id="prod-summary-cards" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 hidden">
                     <div class="card bg-indigo-50 border-l-4 border-indigo-500 shadow-sm">
                         <div class="text-indigo-800 text-sm font-bold uppercase">R&A 總銷售額</div>
@@ -504,8 +562,7 @@
                                         <th class="table-header text-right w-1/4 pr-8">銷售金額</th>
                                     </tr>
                                 </thead>
-                                <tbody id="table-prod-customers" class="bg-white divide-y divide-gray-200">
-                                </tbody>
+                                <tbody id="table-prod-customers" class="bg-white divide-y divide-gray-200"></tbody>
                             </table>
                         </div>
                     </div>
@@ -514,7 +571,6 @@
 
             <!-- VIEW: COMPARISON (資料比對) -->
             <div id="view-comparison" class="hidden space-y-6 fade-in">
-                <!-- Comparison Upload Area -->
                 <div class="card border-l-4 border-yellow-500 mb-6">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-bold text-gray-800">資料比對中心</h3>
@@ -523,7 +579,6 @@
                         </button>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Old Version Upload -->
                         <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                             <h4 class="font-bold text-gray-600 mb-2">1. 舊版資料 (Base)</h4>
                             <label for="comp-file-old" class="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer hover:bg-white transition-colors">
@@ -537,8 +592,6 @@
                                 <i class="fas fa-check"></i> <span id="comp-filename-old"></span>
                             </div>
                         </div>
-
-                        <!-- New Version Upload -->
                         <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
                             <h4 class="font-bold text-blue-700 mb-2">2. 新版資料 (Target)</h4>
                             <label for="comp-file-new" class="flex flex-col items-center justify-center w-full h-24 border-2 border-blue-300 border-dashed rounded-lg cursor-pointer hover:bg-white transition-colors">
@@ -561,7 +614,6 @@
                 </div>
 
                 <div id="comparison-content" class="hidden space-y-8">
-                    <!-- Added Rows -->
                     <div class="card border-t-4 border-green-500">
                         <h3 class="text-lg font-bold text-green-700 mb-2">
                             <i class="fas fa-plus-circle mr-2"></i>新增加的訂單 (Added)
@@ -569,7 +621,7 @@
                         </h3>
                         <div class="overflow-x-auto max-h-96">
                             <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50 sticky top-0">
+                                <thead class="bg-gray-50 sticky top-0 shadow-sm z-10">
                                     <tr>
                                         <th class="table-header text-left w-2/5">客戶</th>
                                         <th class="table-header text-center w-1/4">產品</th>
@@ -581,7 +633,6 @@
                         </div>
                     </div>
 
-                    <!-- Deleted Rows -->
                     <div class="card border-t-4 border-red-500">
                         <h3 class="text-lg font-bold text-red-700 mb-2">
                             <i class="fas fa-minus-circle mr-2"></i>被移除的訂單 (Removed)
@@ -589,7 +640,7 @@
                         </h3>
                         <div class="overflow-x-auto max-h-96">
                             <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50 sticky top-0">
+                                <thead class="bg-gray-50 sticky top-0 shadow-sm z-10">
                                     <tr>
                                         <th class="table-header text-left w-2/5">客戶</th>
                                         <th class="table-header text-center w-1/4">產品</th>
@@ -601,7 +652,6 @@
                         </div>
                     </div>
 
-                    <!-- Changed Rows -->
                     <div class="card border-t-4 border-blue-500">
                         <h3 class="text-lg font-bold text-blue-700 mb-2">
                             <i class="fas fa-edit mr-2"></i>金額變動的訂單 (Changed)
@@ -609,7 +659,7 @@
                         </h3>
                         <div class="overflow-x-auto max-h-96">
                             <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50 sticky top-0">
+                                <thead class="bg-gray-50 sticky top-0 shadow-sm z-10">
                                     <tr>
                                         <th class="table-header text-left w-1/3">客戶</th>
                                         <th class="table-header text-center w-1/5">產品</th>
@@ -630,14 +680,12 @@
                 <div class="card bg-gray-50 border-b border-gray-200 sticky top-0 z-10">
                     <label class="block text-sm font-medium text-gray-700 mb-2">選擇客戶進行洞察 (可多選)</label>
                     
-                    <!-- Custom Multi-Select Dropdown -->
                     <div class="relative group" id="cust-dropdown-wrapper">
                         <button id="cust-dropdown-btn" onclick="toggleCustDropdown()" class="w-full bg-white border border-gray-300 text-left px-4 py-3 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex justify-between items-center">
                             <span id="cust-dropdown-label" class="text-gray-500">請點擊選擇客戶...</span>
                             <i class="fas fa-chevron-down text-gray-400"></i>
                         </button>
                         
-                        <!-- Dropdown Content -->
                         <div id="cust-dropdown-menu" class="hidden absolute w-full bg-white border border-gray-300 rounded-b-md shadow-lg z-50 mt-1">
                             <div class="p-2 border-b bg-gray-50 flex flex-col gap-2">
                                 <input type="text" id="cust-search-input" placeholder="搜尋客戶名稱..." onkeyup="filterCustList(this.value)" class="w-full px-3 py-2 border rounded text-sm focus:outline-none focus:border-blue-500">
@@ -647,13 +695,11 @@
                                 </div>
                             </div>
                             <div id="cust-list-container" class="cust-dropdown-content">
-                                <!-- Checkboxes will be injected here -->
                                 <div class="p-4 text-center text-gray-400 text-sm">請先上傳資料</div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Filter for OrderType = N -->
                     <div class="mt-4">
                         <label class="inline-flex items-center cursor-pointer">
                             <input type="checkbox" id="cust-filter-new" onchange="analyzeCustomer()" class="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded transition duration-150 ease-in-out">
@@ -676,7 +722,6 @@
                         </div>
                     </div>
 
-                    <!-- 同儕標竿分析雷達圖 (Peer Benchmarking) -->
                     <div class="card border-t-4 border-blue-500">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-lg font-bold text-gray-800"><i class="fas fa-radar mr-2 text-blue-500"></i>同儕標竿對比雷達圖 (測試中)</h3>
@@ -708,9 +753,7 @@
                         </div>
                     </div>
 
-                    <!-- SBU Breakdown for Customer -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <!-- R&A -->
                         <div class="card border-t-4 border-indigo-500">
                             <h4 class="font-bold text-indigo-700 mb-3">R&A 銷售紀錄</h4>
                             <div class="overflow-y-auto max-h-60">
@@ -720,7 +763,6 @@
                             </div>
                             <div id="cust-ra-empty" class="text-xs text-gray-400 italic mt-2 hidden">無資料</div>
                         </div>
-                         <!-- ProQuest -->
                          <div class="card border-t-4 border-pink-500">
                             <h4 class="font-bold text-pink-700 mb-3">ProQuest 銷售紀錄</h4>
                             <div class="overflow-y-auto max-h-60">
@@ -730,7 +772,6 @@
                             </div>
                             <div id="cust-pq-empty" class="text-xs text-gray-400 italic mt-2 hidden">無資料</div>
                         </div>
-                         <!-- Software -->
                          <div class="card border-t-4 border-cyan-500">
                             <h4 class="font-bold text-cyan-700 mb-3">Software 銷售紀錄</h4>
                             <div class="overflow-y-auto max-h-60">
@@ -742,7 +783,6 @@
                         </div>
                     </div>
 
-                    <!-- 2026 New Purchases Section -->
                     <div id="new-purchases-container" class="card border-t-4 border-green-500 hidden">
                         <h4 class="font-bold text-green-700 mb-3"><i class="fas fa-star text-yellow-400 mr-2"></i>2026 年新購產品清單 (OrderType = N)</h4>
                         <div class="overflow-y-auto max-h-60">
@@ -759,7 +799,6 @@
                         </div>
                     </div>
 
-                    <!-- Heatmap Section -->
                     <div class="card border-t-4 border-orange-500">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-lg font-bold text-gray-800"><i class="fas fa-fire text-orange-500 mr-2"></i>客戶產品購買熱點圖 (Purchase Heatmap)</h3>
@@ -781,7 +820,6 @@
                         </div>
                     </div>
 
-                    <!-- White Space Analysis & AI Pitch -->
                     <div class="card bg-gray-800 text-white">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
                             <div>
@@ -790,11 +828,8 @@
                             </div>
                         </div>
 
-                        <div id="white-space-container" class="flex flex-wrap gap-2 mb-6">
-                            <!-- Tags go here -->
-                        </div>
+                        <div id="white-space-container" class="flex flex-wrap gap-2 mb-6"></div>
                         
-                        <!-- AI Prompt Input -->
                         <div class="border-t border-gray-600 pt-4 mt-2">
                             <label class="block text-sm text-gray-300 mb-2"><i class="fas fa-comment-dots mr-1"></i>給 AI 的特殊分析指示 (選填)</label>
                             <div class="flex gap-2">
@@ -808,10 +843,7 @@
                             </div>
                         </div>
 
-                        <!-- AI Pitch Result -->
-                        <div id="ai-pitch-result" class="hidden mt-4 bg-gray-700 rounded p-4 border border-gray-600 prose prose-invert max-w-none text-sm">
-                            <!-- AI content goes here -->
-                        </div>
+                        <div id="ai-pitch-result" class="hidden mt-4 bg-gray-700 rounded p-4 border border-gray-600 prose prose-invert max-w-none text-sm"></div>
                          <div id="ai-pitch-loading" class="hidden mt-4 flex justify-center">
                             <div class="spinner border-gray-400 border-l-yellow-400"></div>
                         </div>
@@ -842,7 +874,6 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                <!-- Row 1: Total Sub -->
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium text-gray-900 text-left">Total Sub</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 text-center">50%</td>
@@ -852,7 +883,6 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-green-600 text-right" id="act-total-sub">$0</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-purple-600 text-right" id="ach-total-sub">0%</td>
                                 </tr>
-                                <!-- Row 2: PQ Sub -->
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium text-gray-900 text-left">PQ Sub</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 text-center">20%</td>
@@ -862,7 +892,6 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-green-600 text-right" id="act-pq-sub">$0</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-purple-600 text-right" id="ach-pq-sub">0%</td>
                                 </tr>
-                                <!-- Row 3: New Sub & 1X -->
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium text-gray-900 text-left">New Sub & 1X</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 text-center">30%</td>
@@ -890,9 +919,6 @@
     </main>
 
     <script>
-        // ==========================================
-        // 1. 全域變數與狀態管理 (State Management)
-        // ==========================================
         let apiKey = ""; 
         const STORAGE_KEY_2025 = 'sales_analysis_data_2025';
         const STORAGE_KEY_TARGETS = 'sales_performance_targets';
@@ -919,10 +945,18 @@
             selectedPFs: new Set(), 
             radarPeers: new Set(),
             
-            // Abort Controllers for AI Generation
             dashboardAbortController: null,
             pitchAbortController: null
         };
+
+        const marketState = {
+            am1_25: [], am1_26: [],
+            am2_25: [], am2_26: [],
+            am3_25: [], am3_26: []
+        };
+        let currentMarketData = { customers: [], columns: [], matrix: {} };
+        let marketSortCol = null;
+        let marketSortDir = 1;
 
         const formatCurrency = (val) => {
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(val);
@@ -932,9 +966,6 @@
             return (val * 100).toFixed(1) + '%';
         };
 
-        // ==========================================
-        // 2. 系統初始化與公用函數 (Initialization & Helpers)
-        // ==========================================
         window.onload = function() {
             loadCachedData2025();
             loadPerformanceTargets();
@@ -1010,7 +1041,8 @@
                 'comparison': '比對',
                 'customer': '綜合',
                 'product': '2025',
-                'performance': '2026'
+                'performance': '2026',
+                'market': '市場'
             };
 
             if (tabId === 'upload') {
@@ -1039,13 +1071,15 @@
                 isReady = state.compOldData.length > 0 && state.compNewData.length > 0;
             } else if (tabId === 'customer') {
                 isReady = state.data2025.length > 0 || state.current2026.length > 0;
+            } else if (tabId === 'market') {
+                isReady = Object.values(marketState).some(arr => arr.length > 0);
             }
 
             if (isReady) {
-                indicator.textContent = `資料已就緒 (${suffixes[tabId]})`;
+                indicator.textContent = `資料已就緒 (${suffixes[tabId] || ''})`;
                 indicator.className = "font-bold text-green-600";
             } else {
-                indicator.textContent = `等待資料 (${suffixes[tabId]})`;
+                indicator.textContent = `等待資料 (${suffixes[tabId] || ''})`;
                 indicator.className = "font-bold text-yellow-600";
             }
         }
@@ -1059,6 +1093,7 @@
             
             const titles = { 
                 'upload': '資料上傳', 
+                'market': '市場總覽 (團隊)',
                 'dashboard': '營運總覽', 
                 'annual': '年度回顧',
                 'comparison': '資料比對', 
@@ -1073,11 +1108,9 @@
             if(tabId === 'performance') updatePerformance();
             if(tabId === 'annual') updateAnnualAnalysis();
             if(tabId === 'product' && document.getElementById('prod-level-1').value) analyzeProduct();
+            if(tabId === 'customer') updateRadarChart();
         }
 
-        // ==========================================
-        // 3. 資料讀取與處理 (Data Processing)
-        // ==========================================
         function mapSBU(rawSbu) {
             if (!rawSbu) return "Unknown";
             const upper = rawSbu.toString().toUpperCase();
@@ -1096,25 +1129,60 @@
             return '其它 (' + cg + ')';
         }
 
+        function cleanProductFamily(rawDesc, sbu, lvl1) {
+            if (!rawDesc) return "Unspecified";
+            let desc = String(rawDesc).trim();
+            const descLower = desc.toLowerCase();
+            
+            if (lvl1 === 'R&A') {
+                if (descLower.startsWith('web of science -') && !descLower.startsWith('web of science - api')) {
+                    return 'Web of Science';
+                }
+                if (descLower.startsWith('endnote 2025 -')) {
+                    return 'EndNote 2025';
+                }
+            }
+            if (lvl1 === 'ProQuest' || sbu === 'ProQuest') {
+                if (descLower.startsWith('hnp') || descLower.startsWith('historical newspapers')) {
+                    return 'Historical Newspapers';
+                }
+            }
+            if (lvl1 === 'Ex Libris' || sbu === 'Software') {
+                if (descLower.startsWith('aleph')) return 'Aleph';
+                if (descLower.startsWith('alma')) return 'Alma';
+                if (descLower.startsWith('primo')) return 'Primo';
+                if (descLower.startsWith('sfx')) return 'SFX';
+                if (descLower.startsWith('rapidill')) return 'RapidILL';
+            }
+            return desc;
+        }
+
         function normalizeData(rawRows) {
             return rawRows.map((row, index) => {
                 let uniqueId = row['TrxId'] || row['Id'] || `${row['ShipToCustomerName']}-${row['ProductFamily']}-${row['ContractLineId'] || index}`;
+                let sbu = mapSBU(row['Sbu']);
+                let lvl1 = mapProductLevel1(String(row['CommissionGroup'] || ''));
+                let rawItemDesc = String(row['ItemDescription'] || row['ProductFamily'] || '');
+                let cleanedDesc = cleanProductFamily(rawItemDesc, sbu, lvl1);
 
                 return {
                     id: uniqueId,
-                    customer: row['ShipToCustomerName'] || "Unknown Customer",
+                    customer: String(row['ShipToCustomerName'] || "Unknown Customer").trim(),
                     amount: Number(row['NetAnnualSalesValueCfx']) || 0,
                     type: row['OrderClassification'] || "N/A",
                     orderType: String(row['OrderType'] || ''),
                     orderClassification: String(row['OrderClassification'] || ''),
                     rawSbu: String(row['Sbu'] || ''),
-                    sbu: mapSBU(row['Sbu']),
-                    productFamily: row['ProductFamily'] || "Unspecified", 
+                    sbu: sbu,
+                    productFamily: cleanedDesc,
+                    itemCode: String(row['Item'] || '').trim(), 
+                    itemDesc: cleanedDesc,      
+                    country: String(row['ShipToCountry'] || '').trim(),
+                    subStartDate: String(row['SubStartDate'] || '').trim(),
+                    contractNumber: String(row['ContractNumber'] || ''),
                     commissionGroup: String(row['CommissionGroup'] || ''), 
-                    level1: mapProductLevel1(String(row['CommissionGroup'] || '')), 
+                    level1: lvl1, 
                     businessUnit: String(row['BusinessUnit'] || ''), 
-                    itemDescription: String(row['ItemDescription'] || ''),
-                    contractNumber: String(row['ContractNumber'] || ''), // AQ欄位 (用於有效訂單計算)
                     effectivePeriod: String(row['EffectivePeriod'] || ''),
                     effectiveDate: String(row['EffectiveDate'] || ''),
                     originalRow: row
@@ -1190,15 +1258,26 @@
             });
         }
 
+        window.handleMarketFile = function(event, key) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const infoDivId = `mkt-info-${key.replace('_', '-')}`;
+            document.getElementById(infoDivId).classList.remove('hidden');
+            
+            parseFile(file, (data) => {
+                marketState[key] = data;
+                updateStatusUI(state.currentTab);
+            });
+        };
+
         function loadCachedData2025() {
             try {
                 const cached = localStorage.getItem(STORAGE_KEY_2025);
                 if (cached) {
                     const parsed = JSON.parse(cached);
                     if (parsed.data && parsed.filename) {
-                        
                         if (parsed.data.length > 0 && parsed.data[0].level1 === undefined) {
-                            console.log("偵測到舊版快取格式，正在進行資料轉移...");
                             state.data2025 = normalizeData(parsed.data.map(d => d.originalRow));
                             localStorage.setItem(STORAGE_KEY_2025, JSON.stringify({ data: state.data2025, filename: parsed.filename, timestamp: Date.now() }));
                         } else {
@@ -1216,14 +1295,14 @@
                         updateStatusUI(state.currentTab);
                     }
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) { console.warn("檔案過大無法快取"); }
         }
 
         function saveCachedData2025(data, filename) {
             try {
                 localStorage.setItem(STORAGE_KEY_2025, JSON.stringify({ data, filename, timestamp: Date.now() }));
                 document.getElementById('storage-indicator-2025').classList.remove('hidden');
-            } catch (e) { alert("檔案過大無法快取，但本次操作可正常進行。"); }
+            } catch (e) { console.warn("檔案過大無法快取"); }
         }
 
         function clearStorage2025() {
@@ -1240,19 +1319,299 @@
             }
         }
 
-        // ==========================================
-        // AI 教練功能 (AI Features)
-        // ==========================================
+        function isDateOpen(dateStr) {
+            if (!dateStr) return false;
+            let d = new Date(dateStr);
+            if (isNaN(d.getTime())) {
+                let serial = Number(dateStr);
+                if (!isNaN(serial) && serial > 20000) {
+                    d = new Date(Math.round((serial - 25569) * 86400 * 1000));
+                } else {
+                    return false;
+                }
+            }
+            const today = new Date();
+            const currentMonth = today.getMonth(); 
+            const currentDay = today.getDate();
+            const subMonth = d.getMonth();
+            const subDay = d.getDate();
+            
+            if (subMonth > currentMonth) return true;
+            if (subMonth === currentMonth && subDay >= currentDay) return true;
+            return false;
+        }
+
+        window.runMarketAnalysis = function() {
+            const hasData = Object.values(marketState).some(arr => arr.length > 0);
+            if (!hasData) {
+                alert("請至少上傳一份檔案再開始分析！");
+                return;
+            }
+            
+            document.getElementById('market-matrix-container').classList.remove('hidden');
+            
+            let finalMatrix = {}; 
+            let allProductsMap = new Map();
+            
+            for (let am of ['am1', 'am2', 'am3']) {
+                let d25 = marketState[`${am}_25`].filter(i => i.country === 'TW');
+                let d26 = marketState[`${am}_26`].filter(i => i.country === 'TW');
+                
+                let custSet = new Set([...d25.map(i=>i.customer), ...d26.map(i=>i.customer)]);
+                
+                custSet.forEach(cust => {
+                    if (!finalMatrix[cust]) finalMatrix[cust] = {};
+                    
+                    let c25 = d25.filter(i => i.customer === cust);
+                    let c26 = d26.filter(i => i.customer === cust);
+                    
+                    let itemCodes = new Set([...c25.map(i=>i.itemCode), ...c26.map(i=>i.itemCode)]);
+                    
+                    itemCodes.forEach(code => {
+                        if (!code) return; 
+                        
+                        let i25 = c25.filter(i => i.itemCode === code);
+                        let i26 = c26.filter(i => i.itemCode === code);
+                        
+                        let has25 = i25.length > 0;
+                        let has26 = i26.length > 0;
+                        
+                        let rep = has26 ? i26[0] : i25[0];
+                        let desc = rep.itemDesc;
+                        let lvl1 = rep.level1;
+                        allProductsMap.set(desc, lvl1);
+                        
+                        let status = '';
+                        if (has25 && has26) {
+                            status = 'V';
+                        } else if (!has25 && has26) {
+                            status = '新訂';
+                        } else if (has25 && !has26) {
+                            let isOpen = false;
+                            for (let r of i25) {
+                                if (isDateOpen(r.subStartDate)) { isOpen = true; break; }
+                            }
+                            status = isOpen ? 'Open' : 'X';
+                        }
+                        
+                        if (!finalMatrix[cust][desc]) {
+                            finalMatrix[cust][desc] = status;
+                        } else {
+                            let cur = finalMatrix[cust][desc];
+                            let rank = {'V': 4, '新訂': 3, 'Open': 2, 'X': 1};
+                            if (rank[status] > (rank[cur] || 0)) {
+                                finalMatrix[cust][desc] = status;
+                            }
+                        }
+                    });
+                });
+            }
+            
+            // 強制產品線排序邏輯：R&A -> ProQuest -> Ex Libris -> 其它
+            const lineOrder = { 'R&A': 1, 'ProQuest': 2, 'Ex Libris': 3 };
+            const getLineOrder = (line) => lineOrder[line] || 99;
+
+            let groupedCols = {};
+            allProductsMap.forEach((lvl1, desc) => {
+                if (!groupedCols[lvl1]) groupedCols[lvl1] = [];
+                groupedCols[lvl1].push(desc);
+            });
+            
+            let sortedLines = Object.keys(groupedCols).sort((a, b) => getLineOrder(a) - getLineOrder(b));
+            let finalCols = [];
+            sortedLines.forEach(line => {
+                groupedCols[line].sort().forEach(desc => {
+                    finalCols.push({ line, desc });
+                });
+            });
+            
+            currentMarketData.customers = Object.keys(finalMatrix).sort();
+            currentMarketData.columns = finalCols;
+            currentMarketData.matrix = finalMatrix;
+            
+            drawMarketTable();
+        };
+
+        window.drawMarketTable = function(filterText = '') {
+            const thead = document.getElementById('market-matrix-head');
+            const tbody = document.getElementById('market-matrix-body');
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+            
+            if (currentMarketData.columns.length === 0) {
+                tbody.innerHTML = '<tr><td class="p-4 text-center text-gray-500">查無資料</td></tr>';
+                return;
+            }
+            
+            const getLineColorClass = (line) => {
+                if (line === 'R&A') return 'bg-group-ra';
+                if (line === 'ProQuest') return 'bg-group-pq';
+                if (line === 'Ex Libris') return 'bg-group-ex';
+                return 'bg-group-other';
+            };
+
+            let tr1 = document.createElement('tr');
+            let thEmpty = document.createElement('th');
+            thEmpty.className = 'px-4 py-2 border-b border-gray-300 min-w-[200px] sticky left-0 z-20 bg-gray-100 shadow-sm';
+            thEmpty.rowSpan = 2;
+            thEmpty.innerHTML = '<div class="text-gray-700 font-bold text-left">客戶名稱</div>';
+            tr1.appendChild(thEmpty);
+            
+            let lastLine = null;
+            let colSpan = 0;
+            let thLine = null;
+            
+            currentMarketData.columns.forEach((col, idx) => {
+                if (col.line !== lastLine) {
+                    if (thLine) {
+                        thLine.colSpan = colSpan;
+                        tr1.appendChild(thLine);
+                    }
+                    thLine = document.createElement('th');
+                    thLine.className = `px-2 py-2 border-b border-gray-300 matrix-header-group ${getLineColorClass(col.line)}`;
+                    thLine.textContent = col.line;
+                    lastLine = col.line;
+                    colSpan = 1;
+                } else {
+                    colSpan++;
+                }
+                
+                if (idx === currentMarketData.columns.length - 1) {
+                    thLine.colSpan = colSpan;
+                    tr1.appendChild(thLine);
+                }
+            });
+            thead.appendChild(tr1);
+            
+            let tr2 = document.createElement('tr');
+            currentMarketData.columns.forEach(col => {
+                let th = document.createElement('th');
+                th.className = 'px-2 py-3 border-b border-gray-300 text-xs text-gray-600 bg-gray-50 pf-sortable align-bottom min-w-[40px] max-w-[80px] overflow-hidden';
+                th.innerHTML = `<div class="writing-vertical mx-auto truncate" title="${col.desc}">${col.desc}</div>`;
+                th.onclick = () => sortMarketTable(col.desc);
+                tr2.appendChild(th);
+            });
+            thead.appendChild(tr2);
+            
+            let custs = [...currentMarketData.customers];
+            if (filterText) {
+                custs = custs.filter(c => c.toLowerCase().includes(filterText.toLowerCase()));
+            }
+            
+            if (marketSortCol) {
+                const rank = {'V':4, '新訂':3, 'Open':2, 'X':1, undefined:0};
+                custs.sort((a, b) => {
+                    let valA = rank[currentMarketData.matrix[a][marketSortCol]];
+                    let valB = rank[currentMarketData.matrix[b][marketSortCol]];
+                    return (valB - valA) * marketSortDir;
+                });
+            }
+            
+            custs.forEach(cust => {
+                let tr = document.createElement('tr');
+                tr.className = 'hover:bg-gray-50 transition-colors';
+                
+                let tdCust = document.createElement('td');
+                tdCust.className = 'px-4 py-2 border-b border-gray-200 text-sm font-semibold text-gray-800 sticky left-0 z-10 bg-white shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] truncate max-w-[250px]';
+                tdCust.title = cust;
+                tdCust.textContent = cust;
+                tr.appendChild(tdCust);
+                
+                currentMarketData.columns.forEach(col => {
+                    let td = document.createElement('td');
+                    let status = currentMarketData.matrix[cust][col.desc];
+                    td.className = 'px-2 py-2 border-b border-gray-200 text-xs font-bold text-center';
+                    
+                    if (status === 'V') {
+                        td.classList.add('matrix-cell-steady');
+                        td.textContent = 'V';
+                    } else if (status === '新訂') {
+                        td.classList.add('matrix-cell-new');
+                        td.textContent = '新訂';
+                    } else if (status === 'Open') {
+                        td.classList.add('bg-orange-100', 'text-orange-700');
+                        td.textContent = 'Open';
+                    } else if (status === 'X') {
+                        td.classList.add('matrix-cell-drop');
+                        td.textContent = 'X';
+                    } else {
+                        td.classList.add('matrix-cell-none');
+                        td.textContent = '';
+                    }
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+        };
+
+        window.sortMarketTable = function(desc) {
+            if (marketSortCol === desc) {
+                if (marketSortDir === 1) marketSortDir = -1;
+                else { marketSortCol = null; marketSortDir = 1; }
+            } else {
+                marketSortCol = desc;
+                marketSortDir = 1;
+            }
+            drawMarketTable(document.getElementById('market-search-input').value);
+        };
+
+        window.filterMarketMatrix = function() {
+            let text = document.getElementById('market-search-input').value;
+            drawMarketTable(text);
+        };
+
+        window.exportMarketMatrix = function() {
+            if (!currentMarketData.columns.length) return;
+            
+            let wb = XLSX.utils.book_new();
+            let wsData = [];
+            
+            let header1 = ['客戶名稱'];
+            let header2 = [''];
+            currentMarketData.columns.forEach(c => {
+                header1.push(c.line);
+                header2.push(c.desc);
+            });
+            wsData.push(header1);
+            wsData.push(header2);
+            
+            let filterText = document.getElementById('market-search-input').value;
+            let custs = [...currentMarketData.customers];
+            if (filterText) custs = custs.filter(c => c.toLowerCase().includes(filterText.toLowerCase()));
+            
+            if (marketSortCol) {
+                const rank = {'V':4, '新訂':3, 'Open':2, 'X':1, undefined:0};
+                custs.sort((a, b) => {
+                    let valA = rank[currentMarketData.matrix[a][marketSortCol]];
+                    let valB = rank[currentMarketData.matrix[b][marketSortCol]];
+                    return (valB - valA) * marketSortDir;
+                });
+            }
+            
+            custs.forEach(c => {
+                let row = [c];
+                currentMarketData.columns.forEach(col => {
+                    let status = currentMarketData.matrix[c][col.desc];
+                    if(status === '新訂' || status === 'V') row.push('V');
+                    else if(status === 'X') row.push('X');
+                    else if(status === 'Open') row.push('Open');
+                    else row.push('');
+                });
+                wsData.push(row);
+            });
+            
+            let ws = XLSX.utils.aoa_to_sheet(wsData);
+            XLSX.utils.book_append_sheet(wb, ws, "WhiteSpace");
+            
+            let today = new Date().toISOString().split('T')[0].replace(/-/g, '');
+            XLSX.writeFile(wb, `WhiteSpace_TW_${today}.xlsx`);
+        };
+
         async function callGemini(prompt, signal) {
             const userKey = document.getElementById('api-key-input').value;
             const finalKey = userKey || apiKey;
-
             if (userKey) saveApiKey(); 
-
-            if (!finalKey) {
-                alert("請輸入 API Key。");
-                return null;
-            }
+            if (!finalKey) { alert("請輸入 API Key。"); return null; }
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${finalKey}`;
             
             const makeRequest = async (retryCount = 0) => {
@@ -1274,23 +1633,15 @@
                     throw error;
                 }
             };
-
-            try { 
-                return await makeRequest(); 
-            } catch (error) { 
-                if (error.name === 'AbortError') throw error;
-                alert("AI Error: " + error.message); 
-                return null; 
-            }
+            try { return await makeRequest(); } 
+            catch (error) { if(error.name !== 'AbortError') alert("AI Error: " + error.message); return null; }
         }
 
-        function stopDashboardInsight() {
-            if (state.dashboardAbortController) {
-                state.dashboardAbortController.abort();
-            }
-        }
+        window.stopDashboardInsight = function() {
+            if (state.dashboardAbortController) state.dashboardAbortController.abort();
+        };
 
-        async function generateDashboardInsight() {
+        window.generateDashboardInsight = async function() {
             let dashData = state.current2026.filter(item => item.effectivePeriod.startsWith('2026') || item.effectiveDate.startsWith('2026'));
             dashData = dashData.filter(item => item.orderClassification.toUpperCase() === 'SUB' || item.orderType.toUpperCase() === '1X');
             
@@ -1307,11 +1658,6 @@
 
             state.dashboardAbortController = new AbortController();
 
-            const totalSales = document.getElementById('kpi-total-sales').textContent;
-            const sbuStats = {};
-            dashData.forEach(i => { sbuStats[i.sbu] = (sbuStats[i.sbu] || 0) + i.amount; });
-            const sbuSummary = Object.entries(sbuStats).map(([k,v]) => `${k}: ${formatCurrency(v)}`).join(', ');
-            
             const perfTotalAchieved = document.getElementById('perf-total-achieved').textContent;
             const achTotalSub = document.getElementById('ach-total-sub').textContent;
             const achPqSub = document.getElementById('ach-pq-sub').textContent;
@@ -1326,7 +1672,6 @@
                 for(let i=0; i<5; i++) marketAverages[i] += s[i];
             });
             marketAverages = marketAverages.map(v => (v / allCusts.length * 100).toFixed(1) + '%');
-
             const radarLabels = ['Web of Science', 'ProQuest', 'WoS RA', 'InCites/JCR/EN', 'Software'];
             const marketSummary = radarLabels.map((l, i) => `${l}: 平均持有率 ${marketAverages[i]}`).join(', ');
 
@@ -1364,14 +1709,13 @@
                 - ${highPotential.join('\n- ')}
 
                 請提供：
-                1. **哥的業績點評**：用幽默風趣的方式點評他現在的達成狀況（達成率高要誇獎、達成率低要損他兩句但給希望）。
-                2. **這三間機構怎麼攻？**：針對上述的高潛力客戶，告訴後輩應該拿什麼產品當「破冰船」，利用同儕壓力（Peer Pressure）來切入。
-                3. **別讓獎金飛了**：根據達成率的落後項目（如 PQ Sub 或 New Sub），給出一個明確的「衝刺方向」。
+                1. **哥的業績點評**：用幽默風趣的方式點評他現在的達成狀況。
+                2. **這三間機構怎麼攻？**：針對上述的高潛力客戶，告訴後輩應該拿什麼產品當「破冰船」。
+                3. **別讓獎金飛了**：根據達成率的落後項目，給出一個明確的「衝刺方向」。
 
                 注意事項：
                 - 絕對不要用「致：...」這種生疏的開場。
                 - 語氣要像是在熱炒店喝酒聊業務攻略，或是像學長帶學弟那種感覺。
-                - 內容要實戰，不要講空話。
             `;
 
             try {
@@ -1390,15 +1734,13 @@
                 document.getElementById('btn-dash-stop').classList.add('hidden');
                 document.getElementById('ai-insight-loading').classList.add('hidden');
             }
-        }
+        };
 
-        function stopSalesPitch() {
-            if (state.pitchAbortController) {
-                state.pitchAbortController.abort();
-            }
-        }
+        window.stopSalesPitch = function() {
+            if (state.pitchAbortController) state.pitchAbortController.abort();
+        };
 
-        async function generateSalesPitch() {
+        window.generateSalesPitch = async function() {
             const selectedCusts = Array.from(state.selectedCustomers);
             if (selectedCusts.length === 0) { alert("請先選擇客戶。"); return; }
 
@@ -1427,11 +1769,8 @@
                 .slice(0, 5); 
 
             let promptContext = "";
-            if(selectedCusts.length === 1) {
-                promptContext = `目標客戶: ${selectedCusts[0]}`;
-            } else {
-                promptContext = `目標客戶群體 (共 ${selectedCusts.length} 間機構)，包含: ${selectedCusts.slice(0, 5).join(', ')}...`;
-            }
+            if(selectedCusts.length === 1) promptContext = `目標客戶: ${selectedCusts[0]}`;
+            else promptContext = `目標客戶群體 (共 ${selectedCusts.length} 間機構)，包含: ${selectedCusts.slice(0, 5).join(', ')}...`;
 
             const perfTotalAchieved = document.getElementById('perf-total-achieved').textContent;
             const achTotalSub = document.getElementById('ach-total-sub').textContent;
@@ -1456,15 +1795,12 @@
 
                 【任務要求】
                 1. **現況深度分析**：分析客戶目前的產品持有情況，推測該學術機構目前的發展重點或可能遇到的瓶頸。
-                2. **切入點建議**：身為業務，應該如何利用他們「已經購買的資源」作為橋樑，去說服他們購買「尚未購買的熱門資源 (空白區)」？請以學術機構（如圖書館、研究處、系所）的需求（如：提升研究產出、支持數位轉型、完善特定學科館藏等）來切入。
-                3. **品牌連結**：請注意，以上空白區產品皆屬於「科睿唯安 (Clarivate)」及其旗下品牌 (ProQuest, Ex Libris, Innovative) 的產品。請在策略中強調科睿唯安家族產品的整合優勢與生態系價值。若為群體客戶，請強調該群體可共同適用的切入點。
-                4. **行動方針與業績補齊**：給業務具體的下一步聯絡或提案建議，並務必根據【目前的業績達成狀況與缺口】，優先建議能最快補足落後指標的產品（例如：若 PQ Sub 達成率低，請優先推廣 ProQuest 相關空白產品）。
+                2. **切入點建議**：身為業務，應該如何利用他們「已經購買的資源」作為橋樑，去說服他們購買「尚未購買的熱門資源 (空白區)」？
+                3. **行動方針與業績補齊**：給業務具體的下一步聯絡或提案建議，並務必根據【目前的業績達成狀況與缺口】，優先建議能最快補足落後指標的產品。
                 5. 請使用專業的繁體中文撰寫。
             `;
 
-            if (userCustomPrompt) {
-                prompt += `\n\n【業務特別指示】 (請務必在分析中融入此指示)：${userCustomPrompt}`;
-            }
+            if (userCustomPrompt) prompt += `\n\n【業務特別指示】 (請務必在分析中融入此指示)：${userCustomPrompt}`;
 
             try {
                 const text = await callGemini(prompt, state.pitchAbortController.signal);
@@ -1482,19 +1818,11 @@
                 document.getElementById('btn-pitch-stop').classList.add('hidden');
                 document.getElementById('ai-pitch-loading').classList.add('hidden');
             }
-        }
+        };
 
-        // ==========================================
-        // 4. 營運總覽 (Dashboard)
-        // ==========================================
         function updateDashboard() {
             let dashData = state.current2026.filter(item => item.effectivePeriod.startsWith('2026') || item.effectiveDate.startsWith('2026'));
-            
-            dashData = dashData.filter(item => {
-                const isSub = item.orderClassification.toUpperCase() === 'SUB';
-                const is1X = item.orderType.toUpperCase() === '1X';
-                return isSub || is1X;
-            });
+            dashData = dashData.filter(item => item.orderClassification.toUpperCase() === 'SUB' || item.orderType.toUpperCase() === '1X');
             
             if (dashData.length === 0) {
                  document.getElementById('kpi-total-sales').textContent = "$0";
@@ -1512,10 +1840,7 @@
             document.getElementById('kpi-total-orders').textContent = dashData.length.toLocaleString();
             document.getElementById('kpi-active-customers').textContent = new Set(dashData.map(i => i.customer)).size.toLocaleString();
 
-            let actualTotalSub = 0;
-            let actualPqSub = 0;
-            let actualNewSub1x = 0;
-
+            let actualTotalSub = 0, actualPqSub = 0, actualNewSub1x = 0;
             dashData.forEach(item => {
                 const isSub = item.orderClassification.toUpperCase() === 'SUB';
                 const isN = item.orderType.toUpperCase() === 'N';
@@ -1525,24 +1850,14 @@
                 if (isSub && item.sbu === 'ProQuest') actualPqSub += item.amount;
 
                 const rawSbuUpper = item.rawSbu.toUpperCase();
-                
                 const sbuMatchesNewSub = rawSbuUpper.includes('R&A') || rawSbuUpper.includes('EX LIBRIS') || rawSbuUpper.includes('INNOVATIVE');
                 const cond1 = isN && isSub && sbuMatchesNewSub;
-                
                 const sbuMatches1X = rawSbuUpper.includes('R&A') || rawSbuUpper.includes('EX LIBRIS') || rawSbuUpper.includes('INNOVATIVE') || rawSbuUpper.includes('INFORMATION SOLUTIONS');
                 const cond2 = is1X && sbuMatches1X;
-
-                if (cond1 || cond2) {
-                    actualNewSub1x += item.amount;
-                }
+                if (cond1 || cond2) actualNewSub1x += item.amount;
             });
 
-            const typeStats = {
-                "Total Sub": actualTotalSub,
-                "PQ Sub": actualPqSub,
-                "New Sub & 1X": actualNewSub1x
-            };
-
+            const typeStats = { "Total Sub": actualTotalSub, "PQ Sub": actualPqSub, "New Sub & 1X": actualNewSub1x };
             const typeTbody = document.getElementById('table-classification-body');
             typeTbody.innerHTML = '';
             Object.entries(typeStats).sort(([,a], [,b]) => b - a).forEach(([type, amt]) => {
@@ -1572,180 +1887,62 @@
                 </tr>`;
             });
 
-            // 繪製客戶生態系滲透矩陣 (Bubble Chart)
             const custAgg = {};
             dashData.forEach(item => {
-                if (!custAgg[item.customer]) {
-                    custAgg[item.customer] = { amount: 0, ra: new Set(), pq: new Set(), sw: new Set() };
-                }
+                if (!custAgg[item.customer]) custAgg[item.customer] = { amount: 0, ra: new Set(), pq: new Set(), sw: new Set() };
                 custAgg[item.customer].amount += item.amount;
                 if (item.sbu === 'R&A') custAgg[item.customer].ra.add(item.productFamily);
                 else if (item.sbu === 'ProQuest') custAgg[item.customer].pq.add(item.productFamily);
                 else if (item.sbu === 'Software') custAgg[item.customer].sw.add(item.productFamily);
             });
 
-            const hasSwData = [];
-            const noSwData = [];
+            const hasSwData = [], noSwData = [];
             let maxAmt = 1;
-
             Object.values(custAgg).forEach(v => { if (v.amount > maxAmt) maxAmt = v.amount; });
 
             Object.entries(custAgg).forEach(([cust, data]) => {
-                const raCount = data.ra.size;
-                const pqCount = data.pq.size;
-                const swCount = data.sw.size;
-                
+                const raCount = data.ra.size, pqCount = data.pq.size, swCount = data.sw.size;
                 let crossSell = [];
-                if (swCount === 0) crossSell.push('Software (如 Alma/Primo)');
-                if (raCount === 0) crossSell.push('R&A (如 WoS/InCites)');
+                if (swCount === 0) crossSell.push('Software');
+                if (raCount === 0) crossSell.push('R&A');
                 if (pqCount === 0) crossSell.push('ProQuest');
-                const crossSellText = crossSell.length > 0 ? crossSell.join(', ') : '無 (已全面覆蓋)';
-
-                const r = Math.max(5, Math.sqrt(data.amount / maxAmt) * 35);
                 
-                const pt = {
-                    x: raCount, y: pqCount, r: r, customer: cust, amount: data.amount,
-                    raCount: raCount, pqCount: pqCount, swCount: swCount, crossSell: crossSellText
-                };
-
+                const pt = { x: raCount, y: pqCount, r: Math.max(5, Math.sqrt(data.amount / maxAmt) * 35), customer: cust, amount: data.amount, raCount, pqCount, swCount, crossSell: crossSell.length > 0 ? crossSell.join(', ') : '無' };
                 if (swCount > 0) hasSwData.push(pt); else noSwData.push(pt);
             });
 
-            const bubbleCtx = document.getElementById('ecosystemBubbleChart').getContext('2d');
             if (state.dashboardBubbleChart) state.dashboardBubbleChart.destroy();
-            state.dashboardBubbleChart = new Chart(bubbleCtx, {
+            state.dashboardBubbleChart = new Chart(document.getElementById('ecosystemBubbleChart').getContext('2d'), {
                 type: 'bubble',
                 data: {
                     datasets: [
-                        {
-                            label: '已擁有 Software (如 Alma/Primo)',
-                            data: hasSwData,
-                            backgroundColor: 'rgba(59, 130, 246, 0.6)', 
-                            borderColor: 'rgba(59, 130, 246, 1)',
-                            borderWidth: 1
-                        },
-                        {
-                            label: '未擁有 Software',
-                            data: noSwData,
-                            backgroundColor: 'rgba(156, 163, 175, 0.6)', 
-                            borderColor: 'rgba(156, 163, 175, 1)',
-                            borderWidth: 1
-                        }
+                        { label: '已擁有 Software', data: hasSwData, backgroundColor: 'rgba(59, 130, 246, 0.6)', borderColor: 'rgba(59, 130, 246, 1)' },
+                        { label: '未擁有 Software', data: noSwData, backgroundColor: 'rgba(156, 163, 175, 0.6)', borderColor: 'rgba(156, 163, 175, 1)' }
                     ]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    layout: { padding: 10 },
-                    scales: {
-                        x: { title: { display: true, text: 'R&A 產品持有數' }, beginAtZero: true, suggestedMax: 4, ticks: { stepSize: 1 } },
-                        y: { title: { display: true, text: 'ProQuest 產品持有數' }, beginAtZero: true, suggestedMax: 4, ticks: { stepSize: 1 } }
-                    },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const pt = context.raw;
-                                    return [
-                                        `客戶: ${pt.customer}`,
-                                        `總金額: ${formatCurrency(pt.amount)}`,
-                                        `R&A 數量: ${pt.raCount}`,
-                                        `ProQuest 數量: ${pt.pqCount}`,
-                                        `Software 數量: ${pt.swCount}`,
-                                        `建議 Cross-sell: ${pt.crossSell}`
-                                    ];
-                                }
-                            }
-                        }
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, scales: { x: { title: { display: true, text: 'R&A 產品數' }, beginAtZero: true }, y: { title: { display: true, text: 'ProQuest 產品數' }, beginAtZero: true } } }
             });
         }
 
-        // ==========================================
-        // 5. 年度回顧 (Annual Analysis)
-        // ==========================================
         function updateAnnualAnalysis() {
             const rawData = state.data2025;
-            if (!rawData || rawData.length === 0) {
-                 document.getElementById('annual-total-sales').textContent = "$0";
-                 document.getElementById('annual-total-orders').textContent = "0";
-                 document.getElementById('annual-valid-orders').textContent = "0";
-                 document.getElementById('annual-active-customers').textContent = "0";
-                 document.getElementById('table-annual-top-cust').innerHTML = '';
-                 document.getElementById('table-annual-classification-body').innerHTML = '';
-                 if (state.annualProdChart) state.annualProdChart.destroy();
-                 if (state.annualSbuChart) state.annualSbuChart.destroy();
-                 if (state.annualTypeChart) state.annualTypeChart.destroy();
-                 return;
-            }
-
-            const data = rawData.filter(item => {
-                const isSub = item.orderClassification.toUpperCase() === 'SUB';
-                const is1X = item.orderType.toUpperCase() === '1X';
-                return isSub || is1X;
-            });
-
-            if (data.length === 0) {
-                 document.getElementById('annual-total-sales').textContent = "$0";
-                 document.getElementById('annual-total-orders').textContent = "0";
-                 document.getElementById('annual-valid-orders').textContent = "0";
-                 document.getElementById('annual-active-customers').textContent = "0";
-                 return; 
-            }
+            if (!rawData || rawData.length === 0) return;
+            const data = rawData.filter(item => item.orderClassification.toUpperCase() === 'SUB' || item.orderType.toUpperCase() === '1X');
+            if (data.length === 0) return; 
 
             const totalSales = data.reduce((sum, item) => sum + item.amount, 0);
             document.getElementById('annual-total-sales').textContent = formatCurrency(totalSales);
             document.getElementById('annual-total-orders').textContent = data.length.toLocaleString();
             document.getElementById('annual-active-customers').textContent = new Set(data.map(d => d.customer)).size.toLocaleString();
 
-            // 針對有效訂單數 (ContractNumber) 去重計算
             const validOrdersSet = new Set();
             let noContractCount = 0;
             data.forEach(d => {
-                if (d.contractNumber && d.contractNumber.trim() !== '') {
-                    validOrdersSet.add(d.contractNumber.trim());
-                } else {
-                    // 若沒有 ContractNumber，則視為單獨的訂單 (透過 unique Id 計算)
-                    noContractCount++;
-                }
+                if (d.contractNumber && d.contractNumber.trim() !== '') validOrdersSet.add(d.contractNumber.trim());
+                else noContractCount++;
             });
-            const validOrdersCount = validOrdersSet.size + noContractCount;
-            document.getElementById('annual-valid-orders').textContent = validOrdersCount.toLocaleString();
+            document.getElementById('annual-valid-orders').textContent = (validOrdersSet.size + noContractCount).toLocaleString();
 
-            let actualTotalSub = 0, actualPqSub = 0, actualNewSub1x = 0;
-
-            data.forEach(item => {
-                const isSub = item.orderClassification.toUpperCase() === 'SUB';
-                const isN = item.orderType.toUpperCase() === 'N';
-                const is1X = item.orderType.toUpperCase() === '1X';
-
-                if (isSub) actualTotalSub += item.amount;
-                if (isSub && item.sbu === 'ProQuest') actualPqSub += item.amount;
-
-                const rawSbuUpper = item.rawSbu.toUpperCase();
-                const sbuMatchesNewSub = rawSbuUpper.includes('R&A') || rawSbuUpper.includes('EX LIBRIS') || rawSbuUpper.includes('INNOVATIVE');
-                const cond1 = isN && isSub && sbuMatchesNewSub;
-                
-                const sbuMatches1X = rawSbuUpper.includes('R&A') || rawSbuUpper.includes('EX LIBRIS') || rawSbuUpper.includes('INNOVATIVE') || rawSbuUpper.includes('INFORMATION SOLUTIONS');
-                const cond2 = is1X && sbuMatches1X;
-
-                if (cond1 || cond2) actualNewSub1x += item.amount;
-            });
-
-            const perfStats = {
-                "Total Sub": actualTotalSub,
-                "PQ Sub": actualPqSub,
-                "New Sub & 1X": actualNewSub1x
-            };
-
-            const perfTbody = document.getElementById('table-annual-classification-body');
-            perfTbody.innerHTML = '';
-            Object.entries(perfStats).sort(([,a], [,b]) => b - a).forEach(([type, amt]) => {
-                perfTbody.innerHTML += `<tr><td class="table-cell text-left font-medium">${type}</td><td class="table-cell text-right">${formatCurrency(amt)}</td></tr>`;
-            });
-
-            // 1. Top 15 Products
             const prodAgg = {};
             data.forEach(d => { prodAgg[d.productFamily] = (prodAgg[d.productFamily] || 0) + d.amount; });
             const topProds = Object.entries(prodAgg).sort((a, b) => b[1] - a[1]).slice(0, 15);
@@ -1753,63 +1950,34 @@
             if (state.annualProdChart) state.annualProdChart.destroy();
             state.annualProdChart = new Chart(document.getElementById('annualTopProdChart').getContext('2d'), {
                 type: 'bar',
-                data: {
-                    labels: topProds.map(p => p[0].length > 15 ? p[0].substring(0, 15) + '...' : p[0]),
-                    datasets: [{ label: '銷售金額', data: topProds.map(p => p[1]), backgroundColor: '#3b82f6', borderRadius: 4 }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => formatCurrency(ctx.raw) } } },
-                    scales: { y: { beginAtZero: true, ticks: { callback: (val) => '$' + (val/1000) + 'k' } }, x: { ticks: { autoSkip: false, maxRotation: 45, minRotation: 45 } } }
-                }
+                data: { labels: topProds.map(p => p[0].substring(0, 15)), datasets: [{ label: '銷售額', data: topProds.map(p => p[1]), backgroundColor: '#3b82f6' }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
 
-            // 2. SBU Breakdown
-            const sbuAgg = {};
-            data.forEach(d => { sbuAgg[d.sbu] = (sbuAgg[d.sbu] || 0) + d.amount; });
-            if (state.annualSbuChart) state.annualSbuChart.destroy();
-            state.annualSbuChart = new Chart(document.getElementById('annualSbuChart').getContext('2d'), {
-                type: 'doughnut',
-                data: { labels: Object.keys(sbuAgg), datasets: [{ data: Object.values(sbuAgg), backgroundColor: ['#ec4899', '#6366f1', '#06b6d4', '#9ca3af'], borderWidth: 1 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
-            });
-
-            // 3. Order Type Breakdown
-            const typeAgg = {};
-            data.forEach(d => { const type = d.orderClassification || "未分類"; typeAgg[type] = (typeAgg[type] || 0) + d.amount; });
-            if (state.annualTypeChart) state.annualTypeChart.destroy();
-            state.annualTypeChart = new Chart(document.getElementById('annualOrderTypeChart').getContext('2d'), {
-                type: 'doughnut',
-                data: { labels: Object.keys(typeAgg), datasets: [{ data: Object.values(typeAgg), backgroundColor: ['#10b981', '#f59e0b', '#8b5cf6', '#64748b'], borderWidth: 1 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
-            });
-
-            // 4. Top 15 Customers
             const custAgg = {};
             data.forEach(d => { custAgg[d.customer] = (custAgg[d.customer] || 0) + d.amount; });
-            const topCusts = Object.entries(custAgg).sort((a, b) => b[1] - a[1]).slice(0, 15);
-            
             const tbody = document.getElementById('table-annual-top-cust');
             tbody.innerHTML = '';
-            topCusts.forEach((c, idx) => {
+            Object.entries(custAgg).sort((a, b) => b[1] - a[1]).slice(0, 15).forEach((c, idx) => {
                 const pct = totalSales > 0 ? (c[1] / totalSales) : 0;
-                tbody.innerHTML += `
-                    <tr class="hover:bg-gray-50 transition-colors">
-                        <td class="table-cell text-center text-gray-500">#${idx + 1}</td>
-                        <td class="table-cell text-left font-semibold text-gray-800 whitespace-normal break-words max-w-[250px] w-1/3">${c[0]}</td>
-                        <td class="table-cell text-right text-green-600 font-bold pr-8">${formatCurrency(c[1])}</td>
-                        <td class="table-cell text-right text-gray-500">
-                            <div class="flex items-center justify-end"><span class="mr-2">${formatPercent(pct)}</span><div class="w-16 bg-gray-200 rounded-full h-2"><div class="bg-green-500 h-2 rounded-full" style="width: ${pct * 100}%"></div></div></div>
-                        </td>
-                    </tr>
-                `;
+                tbody.innerHTML += `<tr class="hover:bg-gray-50"><td class="table-cell text-center">#${idx + 1}</td><td class="table-cell">${c[0]}</td><td class="table-cell text-right text-green-600 font-bold">${formatCurrency(c[1])}</td><td class="table-cell text-right">${formatPercent(pct)}</td></tr>`;
             });
         }
 
-        // ==========================================
-        // 6. 產品線表現 (Product Analysis)
-        // ==========================================
         function initProductDropdowns() {
+            updateProductSummaryCards();
+            const l1Select = document.getElementById('prod-level-1');
+            const l1Set = new Set(state.data2025.map(d => d.level1));
+            l1Select.innerHTML = '<option value="">請選擇 Product Line...</option>';
+            [...l1Set].filter(v => v).sort().forEach(val => {
+                l1Select.innerHTML += `<option value="${val}">${val}</option>`;
+            });
+            resetProdMultiDropdown('bu');
+            resetProdMultiDropdown('pf');
+            document.getElementById('product-analysis-content').classList.add('hidden');
+        }
+
+        function updateProductSummaryCards() {
             let raTotal = 0, pqTotal = 0, exTotal = 0;
             state.data2025.forEach(d => {
                 if (d.level1 === 'R&A') raTotal += d.amount;
@@ -1820,18 +1988,6 @@
             document.getElementById('summary-proquest').textContent = formatCurrency(pqTotal);
             document.getElementById('summary-exlibris').textContent = formatCurrency(exTotal);
             document.getElementById('prod-summary-cards').classList.remove('hidden');
-
-            const l1Select = document.getElementById('prod-level-1');
-            const l1Set = new Set(state.data2025.map(d => d.level1));
-            
-            l1Select.innerHTML = '<option value="">請選擇 Product Line...</option>';
-            [...l1Set].filter(v => v).sort().forEach(val => {
-                l1Select.innerHTML += `<option value="${val}">${val}</option>`;
-            });
-            
-            resetProdMultiDropdown('bu');
-            resetProdMultiDropdown('pf');
-            document.getElementById('product-analysis-content').classList.add('hidden');
         }
 
         function toggleProdDropdown(id) {
@@ -1842,7 +1998,6 @@
             const btn = document.getElementById(`${type}-dropdown-btn`);
             const label = document.getElementById(`${type}-dropdown-label`);
             const container = document.getElementById(`${type}-list-container`);
-            
             btn.disabled = true;
             btn.classList.add('bg-gray-100');
             btn.classList.remove('bg-white');
@@ -1855,27 +2010,22 @@
         function populateProdMultiDropdown(type, itemSet, toggleFn) {
             const btn = document.getElementById(`${type}-dropdown-btn`);
             const container = document.getElementById(`${type}-list-container`);
-            
             btn.disabled = false;
             btn.classList.remove('bg-gray-100');
             btn.classList.add('bg-white');
             container.innerHTML = '';
             const items = [...itemSet].filter(v => v).sort();
-            
             if(items.length === 0) {
                 container.innerHTML = '<div class="p-2 text-center text-gray-400 text-sm">無選項</div>';
                 return;
             }
-            
             items.forEach(val => {
                 const div = document.createElement('div');
                 div.className = 'checkbox-item px-3 py-2 flex items-center cursor-pointer border-b border-gray-50 last:border-0 hover:bg-gray-50';
-                
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
-                checkbox.className = 'form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out cursor-pointer';
-                checkbox.checked = false; 
-                
+                checkbox.className = 'form-checkbox h-4 w-4 text-blue-600 cursor-pointer';
+                checkbox.checked = false;
                 div.onclick = (e) => {
                     if (e.target.tagName !== 'INPUT') {
                         checkbox.checked = !checkbox.checked;
@@ -1886,11 +2036,9 @@
                     e.stopPropagation();
                     toggleFn(val, e.target.checked);
                 };
-                
                 const labelText = document.createElement('span');
                 labelText.className = 'ml-2 text-sm text-gray-700 select-none';
                 labelText.textContent = val;
-                
                 div.appendChild(checkbox);
                 div.appendChild(labelText);
                 container.appendChild(div);
@@ -1920,34 +2068,27 @@
             const l1 = document.getElementById('prod-level-1').value;
             state.selectedBUs.clear();
             state.selectedPFs.clear();
-            
             if (!l1) {
                 resetProdMultiDropdown('bu');
                 resetProdMultiDropdown('pf');
                 document.getElementById('product-analysis-content').classList.add('hidden');
                 return;
             }
-
             const filtered = state.data2025.filter(d => d.level1 === l1);
             const l2Set = new Set(filtered.map(d => d.businessUnit));
             populateProdMultiDropdown('bu', l2Set, toggleBuSelection);
-            
             const l3Set = new Set(filtered.map(d => d.productFamily));
             populateProdMultiDropdown('pf', l3Set, togglePfSelection);
-            
             analyzeProduct();
         }
 
         function toggleBuSelection(val, isChecked) {
-            if (isChecked) state.selectedBUs.add(val); else state.selectedBUs.delete(val);
+            if (isChecked) state.selectedBUs.add(val);
+            else state.selectedBUs.delete(val);
             updateProdDropdownLabel('bu', state.selectedBUs);
-            
             const l1 = document.getElementById('prod-level-1').value;
             let filtered = state.data2025.filter(d => d.level1 === l1);
-            if (state.selectedBUs.size > 0) {
-                filtered = filtered.filter(d => state.selectedBUs.has(d.businessUnit));
-            }
-            
+            if (state.selectedBUs.size > 0) filtered = filtered.filter(d => state.selectedBUs.has(d.businessUnit));
             state.selectedPFs.clear(); 
             const l3Set = new Set(filtered.map(d => d.productFamily));
             populateProdMultiDropdown('pf', l3Set, togglePfSelection);
@@ -1955,7 +2096,8 @@
         }
 
         function togglePfSelection(val, isChecked) {
-            if (isChecked) state.selectedPFs.add(val); else state.selectedPFs.delete(val);
+            if (isChecked) state.selectedPFs.add(val);
+            else state.selectedPFs.delete(val);
             updateProdDropdownLabel('pf', state.selectedPFs);
             analyzeProduct();
         }
@@ -1963,28 +2105,25 @@
         function analyzeProduct() {
             const l1 = document.getElementById('prod-level-1').value;
             const content = document.getElementById('product-analysis-content');
-            if (!l1) { content.classList.add('hidden'); return; }
-            
+            if (!l1) {
+                content.classList.add('hidden');
+                return;
+            }
             let data = state.data2025.filter(d => d.level1 === l1);
             if (state.selectedBUs.size > 0) data = data.filter(d => state.selectedBUs.has(d.businessUnit));
             if (state.selectedPFs.size > 0) data = data.filter(d => state.selectedPFs.has(d.productFamily));
-            
             content.classList.remove('hidden');
-            
             const custAgg = {};
             data.forEach(d => {
                 if (!custAgg[d.customer]) custAgg[d.customer] = { amount: 0, items: [] };
                 custAgg[d.customer].amount += d.amount;
                 custAgg[d.customer].items.push(d);
             });
-            
             const totalSales = data.reduce((sum, d) => sum + d.amount, 0);
             document.getElementById('prod-total-sales').textContent = formatCurrency(totalSales);
             document.getElementById('prod-total-customers').textContent = Object.keys(custAgg).length.toLocaleString();
-            
             const sortedCusts = Object.entries(custAgg).sort((a,b) => b[1].amount - a[1].amount);
             const top10 = sortedCusts.slice(0, 10);
-            
             if (state.prodAnalysisChart) state.prodAnalysisChart.destroy();
             state.prodAnalysisChart = new Chart(document.getElementById('prodTopCustChart').getContext('2d'), {
                 type: 'bar',
@@ -1994,28 +2133,23 @@
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
-            
             const tbody = document.getElementById('table-prod-customers');
             tbody.innerHTML = '';
             sortedCusts.forEach(c => {
                 const bus = [...new Set(c[1].items.map(i => i.businessUnit).filter(v => v))].join(', ') || '-';
                 const pfs = [...new Set(c[1].items.map(i => i.productFamily).filter(v => v))].join(', ') || '-';
-                tbody.innerHTML += `
-                    <tr class="hover:bg-gray-50 transition-colors">
-                        <td class="table-cell text-left font-semibold text-gray-800 whitespace-normal break-words max-w-[250px] w-1/3 text-left">${c[0]}</td>
-                        <td class="table-cell text-center text-xs text-gray-500 w-1/5 text-center">${bus}</td>
-                        <td class="table-cell text-center text-xs text-gray-500 w-1/5 text-center">${pfs}</td>
-                        <td class="table-cell text-right font-bold text-green-600 pr-8 w-1/4 text-right">${formatCurrency(c[1].amount)}</td>
-                    </tr>
-                `;
+                tbody.innerHTML += `<tr class="hover:bg-gray-50 transition-colors">
+                    <td class="table-cell text-left font-semibold text-gray-800 whitespace-normal break-words max-w-[250px] w-1/3 text-left">${c[0]}</td>
+                    <td class="table-cell text-center text-xs text-gray-500 w-1/5 text-center">${bus}</td>
+                    <td class="table-cell text-center text-xs text-gray-500 w-1/5 text-center">${pfs}</td>
+                    <td class="table-cell text-right font-bold text-green-600 pr-8 w-1/4 text-right">${formatCurrency(c[1].amount)}</td>
+                </tr>`;
             });
         }
 
-        // ==========================================
-        // 7. 客戶洞察 (Customer Insight & Radar)
-        // ==========================================
         function updateCustomerDropdown() {
             const container = document.getElementById('cust-list-container');
+            if(!container) return;
             container.innerHTML = '';
             
             const allCusts = new Set();
@@ -2024,24 +2158,25 @@
             const customers = [...allCusts].sort();
             
             if (customers.length === 0) {
-                container.innerHTML = '<div class="p-4 text-center text-gray-400 text-sm">無客戶資料</div>';
+                container.innerHTML = '<div class="p-4 text-center text-gray-400 text-sm">請先上傳資料</div>';
                 return;
             }
 
             customers.forEach(cust => {
                 const div = document.createElement('div');
                 div.className = 'checkbox-item px-4 py-2 flex items-center cursor-pointer border-b border-gray-100 last:border-0 hover:bg-gray-50';
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.className = 'form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out cursor-pointer';
-                checkbox.checked = state.selectedCustomers.has(cust);
-                
                 div.onclick = (e) => {
                     if (e.target.tagName !== 'INPUT') {
+                        const checkbox = div.querySelector('input');
                         checkbox.checked = !checkbox.checked;
                         toggleCustomerSelection(cust, checkbox.checked);
                     }
                 };
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out cursor-pointer';
+                checkbox.checked = state.selectedCustomers.has(cust);
                 checkbox.onclick = (e) => {
                     e.stopPropagation();
                     toggleCustomerSelection(cust, e.target.checked);
@@ -2057,30 +2192,43 @@
             });
 
             updateDropdownLabel();
-            initRadarDropdowns(customers);
+            initRadarDropdowns(customers); 
         }
 
         function toggleCustDropdown() {
             const menu = document.getElementById('cust-dropdown-menu');
             menu.classList.toggle('hidden');
-            if(!menu.classList.contains('hidden')) document.getElementById('cust-search-input').focus();
+            if(!menu.classList.contains('hidden')) {
+                document.getElementById('cust-search-input').focus();
+            }
         }
 
         function filterCustList(query) {
             const filter = query.toLowerCase();
-            document.querySelectorAll('#cust-list-container .checkbox-item').forEach(item => {
-                item.style.display = item.textContent.toLowerCase().includes(filter) ? 'flex' : 'none';
+            const items = document.querySelectorAll('#cust-list-container .checkbox-item');
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(filter)) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
             });
         }
 
         function toggleCustomerSelection(cust, isChecked) {
-            if (isChecked) state.selectedCustomers.add(cust); else state.selectedCustomers.delete(cust);
+            if (isChecked) {
+                state.selectedCustomers.add(cust);
+            } else {
+                state.selectedCustomers.delete(cust);
+            }
             updateDropdownLabel();
             analyzeCustomer();
         }
 
         function selectAllCustomers(selectAll) {
-            document.querySelectorAll('#cust-list-container .checkbox-item:not([style*="display: none"])').forEach(item => {
+            const visibleItems = document.querySelectorAll('#cust-list-container .checkbox-item:not(.hidden)');
+            visibleItems.forEach(item => {
                 const checkbox = item.querySelector('input');
                 const custName = item.querySelector('span').textContent;
                 checkbox.checked = selectAll;
@@ -2095,6 +2243,8 @@
             const count = state.selectedCustomers.size;
             const btnLabel = document.getElementById('cust-dropdown-label');
             const labelCount = document.getElementById('selected-count');
+            if(!btnLabel || !labelCount) return;
+            
             labelCount.textContent = count;
 
             if (count === 0) {
@@ -2153,12 +2303,13 @@
         function filterRadarPeerList(query) {
             const filter = query.toLowerCase();
             document.querySelectorAll('.radar-peer-item').forEach(item => {
-                item.style.display = item.textContent.toLowerCase().includes(filter) ? 'flex' : 'none';
+                const text = item.textContent.toLowerCase();
+                if (text.includes(filter)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
             });
-        }
-
-        function toggleRadarPeerDropdown() {
-            document.getElementById('radar-peer-menu').classList.toggle('hidden');
         }
 
         function toggleRadarPeer(cust, isChecked) {
@@ -2169,7 +2320,8 @@
         }
         
         function selectAllRadarPeers(selectAll) {
-            document.querySelectorAll('#radar-peer-list .radar-peer-item').forEach(item => {
+            const visibleItems = document.querySelectorAll('#radar-peer-list .radar-peer-item');
+            visibleItems.forEach(item => {
                 if (item.style.display !== 'none') {
                     const checkbox = item.querySelector('input');
                     const custName = item.querySelector('span').textContent;
@@ -2184,6 +2336,7 @@
 
         function updateRadarPeerLabel() {
             const label = document.getElementById('radar-peer-label');
+            if(!label) return;
             const count = state.radarPeers.size;
             if(count === 0) {
                 label.textContent = "請選擇同儕客戶...";
@@ -2194,6 +2347,11 @@
                 label.classList.remove('text-gray-500');
                 label.classList.add('text-gray-900');
             }
+        }
+        
+        function toggleRadarPeerDropdown() {
+            const menu = document.getElementById('radar-peer-menu');
+            if(menu) menu.classList.toggle('hidden');
         }
 
         function checkCustOwnership(cust, allData) {
@@ -2374,6 +2532,7 @@
             renderCustomerSubTable('cust-pq-body', 'cust-pq-empty', pqData);
             renderCustomerSubTable('cust-sw-body', 'cust-sw-empty', swData);
 
+            // 1. 處理 2026 新購產品清單 (若有勾選)
             const newPurchasesContainer = document.getElementById('new-purchases-container');
             const newPurchasesBody = document.getElementById('new-purchases-body');
             if (includeNew) {
@@ -2387,7 +2546,7 @@
                     });
                     newPurchasesBody.innerHTML = '';
                     Object.entries(newProdAgg).sort((a,b)=>b[1].amount - a[1].amount).forEach(([prod, data]) => {
-                        newPurchasesBody.innerHTML += `<tr class="hover:bg-green-50 transition-colors"><td class="px-4 py-3 text-left text-gray-700 font-medium">${prod}</td><td class="px-4 py-3 text-center text-xs text-gray-500">${data.sbu}</td><td class="px-4 py-3 text-right font-bold text-green-600 pr-6">${formatCurrency(data.amount)}</td></tr>`;
+                        newPurchasesBody.innerHTML += `<tr class="hover:bg-green-50 transition-colors"><td class="px-4 py-2 text-left text-gray-700 font-medium">${prod}</td><td class="px-4 py-2 text-center text-xs text-gray-500">${data.sbu}</td><td class="px-4 py-2 text-right font-bold text-green-600 pr-6">${formatCurrency(data.amount)}</td></tr>`;
                     });
                 } else {
                     newPurchasesContainer.classList.add('hidden');
@@ -2395,7 +2554,8 @@
             } else {
                 newPurchasesContainer.classList.add('hidden');
             }
-
+            
+            // Heatmap
             const renderHeatmap = (containerId, data, rgbColor) => {
                 const container = document.getElementById(containerId);
                 container.innerHTML = '';
@@ -2424,6 +2584,7 @@
             renderHeatmap('heatmap-pq', pqData, '219, 39, 119');  
             renderHeatmap('heatmap-sw', swData, '8, 145, 178');   
 
+            // White Space
             const allGlobalData = [...state.data2025, ...state.current2026];
             const globalStats = {};
             allGlobalData.forEach(i => {
@@ -2462,14 +2623,17 @@
                      wsContainer.appendChild(more);
                 }
             }
-            
+
+            // 4. 連動更新雷達圖
             updateRadarChart();
+
             document.getElementById('ai-pitch-result').classList.add('hidden');
         }
 
         function renderCustomerSubTable(tbodyId, emptyId, data) {
             const tbody = document.getElementById(tbodyId);
             const emptyMsg = document.getElementById(emptyId);
+            if(!tbody || !emptyMsg) return;
             tbody.innerHTML = '';
             
             if (data.length === 0) {
@@ -2487,9 +2651,6 @@
             }
         }
 
-        // ==========================================
-        // 8. 業績達成分析 (Performance)
-        // ==========================================
         function updatePerformance() {
             let actualTotalSub = 0, actualPqSub = 0, actualNewSub1x = 0;
             const perfData = state.current2026.filter(item => item.effectivePeriod.startsWith('2026') || item.effectiveDate.startsWith('2026'));
@@ -2533,9 +2694,6 @@
             document.getElementById('perf-total-achieved').textContent = formatPercent(totalWeightedAch);
         }
 
-        // ==========================================
-        // 9. 資料比對 (Comparison)
-        // ==========================================
         function runManualComparison() {
             if (state.compOldData.length === 0 || state.compNewData.length === 0) {
                 alert("請先上傳「舊版資料」與「新版資料」");
